@@ -1,0 +1,164 @@
+body {
+    margin: 0px;
+}
+
+body, input {
+    background-color: #111;
+    color: #ddd;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-variant: small-caps;
+}
+
+h4,h5,h6 {
+    margin-top: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: #0f0;
+}
+
+a:visited {
+    color: #f80;
+}
+
+a:active {
+    color: #f22;
+}
+
+input:focus, button:focus {
+    outline: none;
+}
+
+button {
+    padding: 4px;
+    margin-right: 5px;
+    color: #000;
+    background-color: #888;
+    border-radius: 5px;
+    border: none;
+}
+
+button:active {
+    color: #888;
+    background-color: #000;
+}
+
+.addButton {
+    margin-left: 5px;
+}
+
+/* Dashboard */
+
+.dashboard {
+    background-color: #000;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dashboard .container {
+    max-height: 300px;
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    overflow: hidden;
+}
+
+/* .dashboard .placeBox { */
+/*     overflow-y: hidden; */
+/*     overflow-x: auto; */
+/*     white-space: nowrap; */
+/* } */
+
+/* .dashboard .container.closed .placeBox { */
+/*     overflow: visible; */
+/* } */
+
+.dashboard .container.closed {
+    max-height: 0px;
+}
+
+.dashboard .expander {
+    cursor: pointer;
+    height: 16px;
+}
+
+.expander.open {
+    background: url('chevron-up.png') center no-repeat;
+}
+
+.expander.closed {
+    background: url('chevron-dn.png') center no-repeat;
+}
+
+/* Weather box */
+
+.box {
+    display: inline-block;
+    background-color: #444;
+    padding: 5px;
+    margin: 5px 5px 0px 0px;
+    border-radius: 5px;
+    min-width: 150px;
+    vertical-align: top;
+}
+
+.dashboard .box,
+.dashboard button,
+.dashboard input {
+    font-size: 80%;
+}
+
+/* Weather box close button */
+
+.float-button:after {
+    width: 16px;
+    height: 16px;
+    content: 'x';
+    float: right;
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #0f0;
+    background-color: #111;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+}
+
+.float-button:hover:after {
+    background-color: #040;
+}
+
+.float-button:active:after {
+    color: #111;
+    background-color: #0f0;
+}
+
+/* Weather box loader */
+
+.box .loader {
+    content: url('ajax-loader-444.gif');
+    display: block;
+}
+
+/* Error list */
+
+.error {
+    color: red;
+}
+
+.bulletless {
+    list-style-type: none;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+/* Content panel */
+
+.contentPanel {
+    padding: 5px;
+}
