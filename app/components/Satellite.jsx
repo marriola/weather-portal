@@ -42,7 +42,7 @@ class Satellite extends React.Component {
         }
         
         return (
-            <div className="box">
+            <div className="float box">
                 <h4>Satellite</h4>
                 { content }
             </div>

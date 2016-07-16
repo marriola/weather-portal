@@ -33,14 +33,9 @@ class Place {
 	    this.zip = location;
 	}
         else {
-            /* 	    throw new Error("Expected City, State or ZIP code");*/
             this.city = location;
             this.state = "";
         }
-    }
-
-    displayName () {
-        return [this.city, this.state, this.country].filter(x => !!x).join(", ") || this.zip;
     }
 }
 

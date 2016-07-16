@@ -200,6 +200,7 @@ let isoCodes = {
     'GS': 'GS',
     'SP': 'ES',
     'SB': 'LK',
+    'SS': 'SS',
     'SU': 'SD',
     'SM': 'SR',
     'SJ': 'SJ',

@@ -4,21 +4,26 @@ function splitJoin(str, splitChar, joinChar, fun) {
 	      .join(joinChar);
 }
 
+
 function capitalize(word) {
     return word[0].toUpperCase() + word.substr(1).toLowerCase();
 }
+
 
 export function snakeCase(str) {
     return splitJoin(str, " ", "_", capitalize);
 }
 
+
 export function spaceCase(str) {
     return splitJoin(str, "_", " ", capitalize);
 }
 
+
 export function titleCase(str) {
     return splitJoin(str, " ", " ", capitalize);
 }
+
 
 export function deepCopy(arr) {
     var out = [];
@@ -33,6 +38,10 @@ export function deepCopy(arr) {
     return out;
 }
 
+
+/**
+ * Clones an array and applies properties from another object into an object in it.
+ */
 export function cloneExtend(arr, index, props) {
     let newArr = deepCopy(arr);
     let item = newArr[index];
@@ -40,6 +49,38 @@ export function cloneExtend(arr, index, props) {
     return newArr;
 }
 
+
 export function required(fn, param) {
     throw `${fn}: required parameter ${param} missing`;
+}
+
+
+export function nullify(value, nullValue) {
+    return value === nullValue ? null : value;
+}
+
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+export function niceTime(epoch) {
+    let d = new Date(+epoch);
+
+    let month = d.getMonth();
+    let day = d.getDate();
+
+    let hour = d.getHours();
+    let ampm;
+    if (hour > 12) {
+        hour -= 12;
+        ampm = "PM";
+    } else {
+        ampm = "AM";
+    }
+    if (hour == 0)
+        hour = 12;
+    let minute = d.getMinutes();
+    if (minute < 10)
+        minute = "0" + minute;
+    
+    return `${months[month]} ${day}, ${hour}:${minute} ${ampm}`;
 }
