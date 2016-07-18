@@ -6,9 +6,11 @@ export default class Conditions extends React.Component {
         let small = { fontSize: "12px" };
         
         let conditions = this.props.place.conditions.current_observation;
+
+        let style = {}; //{ position: "absolute" };
         
         return (
-            <div className="float box">
+            <div className="panel left" style={ style }>
                 <table>
                     <tbody>
                         <tr>
@@ -82,4 +84,8 @@ export default class Conditions extends React.Component {
             </div>
         );
     }
+
+    /* componentDidUpdate() {
+     *     this.props.place.weather.getConditions();
+     * }*/
 }

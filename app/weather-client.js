@@ -26,7 +26,6 @@ export default class WeatherClient {
 
         this.__INITIALIZED = true;
 	this.apiKey = WEATHER_API_KEY;
-	this.fresh = true;
 
 	this.placeKey = place.key;
         this.placeName = place.displayName;
@@ -41,10 +40,6 @@ export default class WeatherClient {
         return matching.length > 0 ? matching[0] : null;
     }
 
-    setDirty() {
-	this.fresh = false;
-    }
-
     getConditions(tries = 0) {
 	if (tries == MAX_TRIES) {
 	    store.dispatch(Actions.Places.fail(this.placeKey));
@@ -53,33 +48,17 @@ export default class WeatherClient {
 	
 	let path = this.queryPath("conditions");
 
-	let setDirty = this.setDirty.bind(this);
-	
 	return Axios
 	    .get(path)
 	    .then(response => {
-                if (response.data.response.results) {
-                    // Got search results
-                    
-                    store.dispatch(Actions.Places.update(this.placeKey, {
-                        status: PlaceStatus.choosing,
-                        /*                         displayName: `Search results for "${this.placeName}"`,*/
-                        results: response.data.response.results
-                    }));
-                }
-                else {
-                    // Got weather conditions
-
-		    if (this.fresh) {
-		        setDirty();
-		        store.dispatch(Actions.Places.load(this.placeKey, response.data));
-		    }
-
+                if (!response.data.response.results) {
 		    store.dispatch(Actions.Places.update(this.placeKey, {
                         "status": PlaceStatus.loaded,
                         "conditions": response.data
                     }));
                 }
+
+                return response.data;
 	    })
 	    .catch(error => {
 		if (error.message == "Network Error") {

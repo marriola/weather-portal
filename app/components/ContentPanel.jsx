@@ -12,20 +12,24 @@ export default class ContentPanel extends React.Component {
         if (this.props.content.place) {
             content = (
                 <div>
-                    <h2>{ this.props.content.place.displayName }</h2>
-                    <h3>{ wuCountryCodeToName(this.props.content.place.country) }</h3>
+                    <div className="panel top center">
+                        <h2>{ this.props.content.place.displayName }</h2>
+                        <h3>{ wuCountryCodeToName(this.props.content.place.country) }</h3>
+                    </div>
                     
-                    <Satellite weather={ this.props.content.weather } />
                     <Conditions place={ this.props.content.place } />
+                    <Satellite weather={ this.props.content.weather } />
                 </div>
             );
         }
         else {
             content = <span>Nothing yet</span>;
         }
+
+        let className = this.props.content.dashboardOpen ? "contentPanel" : "contentPanel up";
         
         return (
-            <div className="contentPanel">
+            <div className={ className }>
                 { content }
             </div>
         );

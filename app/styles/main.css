@@ -63,13 +63,18 @@ button:active {
 /* Dashboard */
 
 .dashboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: #000;
     padding: 5px;
     border-bottom: 1px solid #ddd;
+    z-index: 10;
 }
 
 .dashboard .container {
-    max-height: 300px;
+    height: 175px;
     transition-property: all;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
@@ -87,7 +92,7 @@ button:active {
 }
 
 .dashboard .container.closed {
-    max-height: 0px;
+    height: 0px;
 }
 
 .dashboard .expander {
@@ -174,7 +179,39 @@ button:active {
 /* Content panel */
 
 .contentPanel {
+    position: relative;
+    margin-top: 205px;
+    transition-property: margin-top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.contentPanel.up {
+    margin-top: 27px;
+}
+
+.contentPanel .panel {
+    background-color: #000;
     padding: 5px;
+    height: 100%;
+}
+
+.center {
+    text-align: middle;
+}
+
+.panel.top {
+    border-bottom: 1px solid #111;
+}
+
+.panel.left {
+    border-right: 1px solid #111;
+    float: left;
+}
+
+.panel.right {
+    border-left: 1px solid #111;
+    float: right;
 }
 
 table {

@@ -40,14 +40,6 @@ function createReducer({
 
     me = reducer;
 
-    reducer.add = function (type, fn) {
-	actions[type] = fn;
-    }
-
-    reducer.remove = function (type) {
-        delete actions[type];
-    }
-
     reducer.action = function (action) {
         return name + "$" + action;
     }
@@ -93,8 +85,8 @@ let places = createReducer({
             place.displayName = this.displayName(place);
             
 	    return [
-	        ...state,
-	        place
+	        place,
+	        ...state
 	    ];
         },
 
@@ -214,7 +206,8 @@ let content = createReducer({
     name: "content",
 
     defaultValue: {
-        status: 1
+        status: 1,
+        dashboardOpen: true
     },
 
     actions: {
@@ -234,8 +227,36 @@ let content = createReducer({
                 weather: action.place.weather,
                 refresh: true
             };
+        },
+        
+        ui$dashboard: function (state, action) {
+            return {
+                ...state,
+                dashboardOpen: action.state
+            };
         }
     }
 });
 
-export { places, errors, activePlace, satellite, content };
+
+////////////////////////////////////////////////////////////////////////////////
+
+let ui = createReducer({
+    name: "ui",
+
+    defaultValue: {
+        dashboardOpen: true
+    },
+
+    actions: {
+        dashboard: function (state, action) {
+            return {
+                ...state,
+                dashboardOpen: action.state
+            };
+        }
+    }
+});
+
+
+export { places, errors, activePlace, satellite, content, ui };

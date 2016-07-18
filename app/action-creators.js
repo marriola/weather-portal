@@ -1,5 +1,5 @@
 import { store } from "initialize";
-import { errors, places, activePlace, satellite } from "reducers";
+import { errors, places, activePlace, satellite, ui } from "reducers";
 
 let Places = {
     add: function (place) {
@@ -89,4 +89,13 @@ let Content = {
     }
 };
 
-export { Places, Errors, ActivePlace, Satellite, Content };
+let UI = {
+    toggleDashboard: function (state) {
+        return {
+            type: ui.action("dashboard"),
+            state
+        }
+    }
+};
+
+export { Places, Errors, ActivePlace, Satellite, Content, UI };

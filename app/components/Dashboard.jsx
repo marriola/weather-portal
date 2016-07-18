@@ -1,24 +1,22 @@
 import React from 'react';
 import PlacesContainer from 'components/Places';
 import ErrorList from 'components/ErrorList';
+import { connect } from 'decorators';
+import { UI } from 'action-creators';
 
+@connect("ui")
 export default class Dashboard extends React.Component {
     constructor (props) {
         super(props);
-        
-        this.state = {
-            open: true
-        };
     }
 
-    toggle() {
-        this.setState({
-            open: !this.state.open
-        });
+    toggle(state) {
+        this.props.dispatch(UI.toggleDashboard(state));
     }
     
     render() {
-        let containerClass = this.state.open ? "container" : "container closed";
+        let open = this.props.ui.dashboardOpen;
+        let containerClass = open ? "container" : "container closed";
         
         return (
             <div className="dashboard">
@@ -27,8 +25,8 @@ export default class Dashboard extends React.Component {
                     <ErrorList />
                 </div>
                 
-                <div className={ this.state.open ? "expander open" : "expander closed" }
-                     onClick={ this.toggle.bind(this) }
+                <div className={ open ? "expander open" : "expander closed" }
+                     onClick={ this.toggle.bind(this, !open) }
                 ></div>
             </div>
         );

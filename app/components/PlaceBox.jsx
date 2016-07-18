@@ -2,6 +2,7 @@ import React from "react";
 import { Place, PlaceStatus } from "place";
 import * as Actions from "action-creators";
 import { wuCountryCodeToName } from "country-codes";
+import { store } from "initialize";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -12,10 +13,14 @@ class Conditions extends React.Component {
     }
 
     render() {
+        let zip = this.props.conditions.display_location.zip;
+        if (zip === "00000")
+            zip = null;
+        
 	return (
 	    <div>
                 { this.props.countryName }<br/>
-		{ this.props.conditions.display_location.zip }
+		{ zip }
 
 		<ul className="bulletless">
 		    <li>{ this.props.conditions.weather }</li>
@@ -43,7 +48,22 @@ export default class PlaceBox extends React.Component {
 
     update() {
 	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
-	this.props.place.weather.getConditions();
+	this.props.place.weather.getConditions()
+            .then(response => {
+                let activePlace = store.getState().activePlace.place;
+                
+                if (response.results) {
+                    // Got search results
+                    
+                    this.props.dispatch(Actions.Places.update(this.props.place.key, {
+                        status: PlaceStatus.choosing,
+                        results: response.results
+                    }));
+                }
+                else if (activePlace && this.props.place.key === activePlace.key) {
+                    this.props.dispatch(Actions.ActivePlace.set(this.props.place));
+                }
+            });
     }
 
     peek() {
@@ -68,10 +88,10 @@ export default class PlaceBox extends React.Component {
             let results = this.props.place.results ? (
                 <ul>
                     { this.props.place.results.map(place => (
-                          <li><a href="javascript:void(0)" onClick={ this.chooseCity.bind(this, place.zmw) }>
-                              { place.city }, { place.state }, { wuCountryCodeToName(place.country) }
-                          </a></li>
-                      )) }
+                        <li><a href="javascript:void(0)" onClick={ this.chooseCity.bind(this, place.zmw) }>
+                            { [place.city, place.state, wuCountryCodeToName(place.country)].filter(x => !!x).join(", ") }
+                        </a></li>
+                    )) }
                 </ul>
             ) : null;
             
@@ -112,7 +132,10 @@ export default class PlaceBox extends React.Component {
     componentDidMount() {
 	if (this.props.place.status == PlaceStatus.loading) {
 	    this.props.place.weather.init(this.props.place);
-	    this.props.place.weather.getConditions();
+	    this.props.place.weather.getConditions()
+                .then((response => {
+		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+                }).bind(this));
 	}
     }
 }
