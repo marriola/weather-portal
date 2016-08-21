@@ -1,7 +1,9 @@
 import Axios from "axios";
 import { store } from "initialize";
 import { PlaceStatus } from "place";
-import * as Actions from "action-creators";
+import ErrorsAC from "action-creators/errors";
+import PlacesAC from "action-creators/places";
+import SatelliteAC from "action-creators/satellite";
 import Satellite from "components/Satellite";
 
 
@@ -42,7 +44,7 @@ export default class WeatherClient {
 
     getConditions(tries = 0) {
 	if (tries == MAX_TRIES) {
-	    store.dispatch(Actions.Places.fail(this.placeKey));
+	    store.dispatch(PlacesAC.fail(this.placeKey));
 	    return;
 	}
 	
@@ -51,8 +53,16 @@ export default class WeatherClient {
 	return Axios
 	    .get(path)
 	    .then(response => {
-                if (!response.data.response.results) {
-		    store.dispatch(Actions.Places.update(this.placeKey, {
+                if (response.data.response.results) {
+                    // Got search results
+                    
+                    store.dispatch(PlacesAC.update(this.placeKey, {
+                        status: PlaceStatus.choosing,
+                        results: response.data.response.results
+                    }));
+                }
+                else {
+		    store.dispatch(PlacesAC.update(this.placeKey, {
                         "status": PlaceStatus.loaded,
                         "conditions": response.data
                     }));
@@ -64,7 +74,7 @@ export default class WeatherClient {
 		if (error.message == "Network Error") {
 		    this.getConditions(++tries);
 		    /* } else {
-                     *     /* store.dispatch(Actions.Errors.add(error.message));
+                     *     /* store.dispatch(ErrorsAC.add(error.message));
                     *     console.log(error.message);*/
                 }
 	    });
@@ -72,14 +82,14 @@ export default class WeatherClient {
 
     getSatellite (tries = 0) {
         if (tries == MAX_TRIES) {
-            store.dispatch(Actions.Satellite.update({
+            store.dispatch(SatelliteAC.update({
                 status: 2
             }));
         }
         
         let path = this.queryPath("satellite");
 
-        store.dispatch(Actions.Satellite.update({
+        store.dispatch(SatelliteAC.update({
             refresh: false,
             status: 0
         }));
@@ -87,7 +97,7 @@ export default class WeatherClient {
         return Axios
             .get(path)
             .then(response => {
-                store.dispatch(Actions.Satellite.update({
+                store.dispatch(SatelliteAC.update({
                     status: 1,
                     pics: response.data.satellite
                 }));
@@ -96,7 +106,7 @@ export default class WeatherClient {
 		if (error.message == "Network Error") {
 		    this.getConditions(++tries);
 		} else {
-                    /* store.dispatch(Actions.Errors.add(error.message));*/
+                    /* store.dispatch(ErrorsAC.add(error.message));*/
                     console.log(error.message);
                 }
             })

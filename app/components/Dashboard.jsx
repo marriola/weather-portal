@@ -1,8 +1,8 @@
 import React from 'react';
+import { connect } from 'decorators';
+import UI from 'action-creators/ui';
 import PlacesContainer from 'components/Places';
 import ErrorList from 'components/ErrorList';
-import { connect } from 'decorators';
-import { UI } from 'action-creators';
 
 @connect("ui")
 export default class Dashboard extends React.Component {

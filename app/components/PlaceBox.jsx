@@ -1,6 +1,7 @@
 import React from "react";
 import { Place, PlaceStatus } from "place";
-import * as Actions from "action-creators";
+import ActivePlaceAC from "action-creators/active-place";
+import PlacesAC from "action-creators/places";
 import { wuCountryCodeToName } from "country-codes";
 import { store } from "initialize";
 
@@ -47,31 +48,23 @@ export default class PlaceBox extends React.Component {
     }
 
     update() {
-	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
+	this.props.dispatch(PlacesAC.update(this.props.place.key, { "status": PlaceStatus.loading }));
 	this.props.place.weather.getConditions()
             .then(response => {
                 let activePlace = store.getState().activePlace.place;
                 
-                if (response.results) {
-                    // Got search results
-                    
-                    this.props.dispatch(Actions.Places.update(this.props.place.key, {
-                        status: PlaceStatus.choosing,
-                        results: response.results
-                    }));
-                }
-                else if (activePlace && this.props.place.key === activePlace.key) {
-                    this.props.dispatch(Actions.ActivePlace.set(this.props.place));
+                if (activePlace && this.props.place.key === activePlace.key) {
+                    this.props.dispatch(ActivePlaceAC.set(this.props.place));
                 }
             });
     }
 
     peek() {
-        this.props.dispatch(Actions.ActivePlace.set(this.props.place));
+        this.props.dispatch(ActivePlaceAC.set(this.props.place));
     }
 
     chooseCity(zmw) {
-        this.props.dispatch(Actions.Places.update(this.props.place.key, {
+        this.props.dispatch(PlacesAC.update(this.props.place.key, {
             status: PlaceStatus.loading,
             zmw
         }));
@@ -134,7 +127,7 @@ export default class PlaceBox extends React.Component {
 	    this.props.place.weather.init(this.props.place);
 	    this.props.place.weather.getConditions()
                 .then((response => {
-		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+		    this.props.dispatch(PlacesAC.load(this.props.place.key, response));
                 }).bind(this));
 	}
     }

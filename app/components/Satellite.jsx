@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "decorators";
-import * as Actions from "action-creators";
+import SatelliteAC from "action-creators/satellite";
 
 @connect("satellite")
 class Satellite extends React.Component {
@@ -30,10 +30,10 @@ class Satellite extends React.Component {
 
             case this.Status.loaded:
                 content = (
-                              <div>
-                                  { this.props.satellite.pics ? <img src={ this.props.satellite.pics.image_url } /> : null }
-                              </div>
-                          );
+                    <div>
+                        { this.props.satellite.pics ? <img src={ this.props.satellite.pics.image_url } /> : null }
+                    </div>
+                );
                 break;
 
             case this.Status.failed:
