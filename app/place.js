@@ -1,6 +1,4 @@
-import { v4 as uuid } from "node-uuid";
-import bigInt from "big-integer";
-import { titleCase } from "utils";
+import { titleCase, uniqueIdentifier } from "utils";
 import WeatherClient from "weather-client";
 
 
@@ -15,37 +13,12 @@ let PlaceStatus = {
     failed: 3
 };
 
-function uuidToBase62(id) {
-    let bgid = bigInt(id.replace(/-/g, ""), 16);
-    let answer = "";
-
-    while (bgid.greater(0)) {
-        let qr = bgid.divmod(62);
-        let r = qr.remainder.valueOf();
-        let char = "";
-
-        if (r < 10) {
-            char = String(r);
-        }
-        else if (r < 36) {
-            char = String.fromCharCode(65 + r - 10);
-        }
-        else {
-            char = String.fromCharCode(97 + r - 36);
-        }
-
-        answer += char;
-        bgid = qr.quotient;
-    }
-
-    return answer;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 class Place {
     constructor(location) {
-	this.key = uuidToBase62(uuid());
+	this.key = uniqueIdentifier();
 	this.status = PlaceStatus.loading;
 	this.weather = new WeatherClient();
 

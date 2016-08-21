@@ -1,3 +1,6 @@
+import { v4 } from "node-uuid";
+import bigInt from "big-integer";
+
 function splitJoin(str, splitChar, joinChar, fun) {
     return str.split(splitChar)
 	      .map(fun)
@@ -83,4 +86,32 @@ export function niceTime(epoch) {
         minute = "0" + minute;
     
     return `${months[month]} ${day}, ${hour}:${minute} ${ampm}`;
+}
+
+
+export function uniqueIdentifier() {
+    let id = v4();
+    let bgid = bigInt(id.replace(/-/g, ""), 16);
+    let answer = "";
+
+    while (bgid.greater(0)) {
+        let qr = bgid.divmod(62);
+        let r = qr.remainder.valueOf();
+        let char = "";
+
+        if (r < 10) {
+            char = String(r);
+        }
+        else if (r < 36) {
+            char = String.fromCharCode(65 + r - 10);
+        }
+        else {
+            char = String.fromCharCode(97 + r - 36);
+        }
+
+        answer += char;
+        bgid = qr.quotient;
+    }
+
+    return answer;
 }

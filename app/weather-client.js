@@ -50,7 +50,11 @@ export default class WeatherClient {
 	return Axios
 	    .get(path)
 	    .then(response => {
-                if (response.data.response.results) {
+                if (response.data.response.error) {
+                    store.dispatch(Actions.Errors.add(response.data.response.error.description));
+                    return null;
+                }  
+                else if (response.data.response.results) {
                     // Got search results
                     
                     store.dispatch(Actions.Places.update(this.placeKey, {

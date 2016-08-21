@@ -1,5 +1,5 @@
 import createReducer from "reducers/reducer";
-import { v4 as uuid } from "node-uuid";
+import { uniqueIdentifier } from "utils";
 
 
 export default createReducer({
@@ -10,7 +10,7 @@ export default createReducer({
     actions: {
         add: function addError (state, action) {
             let err = {
-                key: uuid(),
+                key: uniqueIdentifier(),
                 message: action.message
             };
             
