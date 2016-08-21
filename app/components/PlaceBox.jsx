@@ -1,4 +1,5 @@
 import React from "react";
+import Panel from "components/Panel";
 import { Place, PlaceStatus } from "place";
 import Actions from "action-creators";
 import { wuCountryCodeToName } from "country-codes";
@@ -116,11 +117,9 @@ export default class PlaceBox extends React.Component {
         }
 
 	let weatherBox = (
-	    <div className="box">
-		<a href="javascript:void(0)" className="float-button" onClick={ this.remove.bind(this) }></a>		
-		<b>{ this.props.place.displayName }</b>
+            <Panel className="conditions" title={ this.props.place.displayName } showShade={ false } close={ this.remove.bind(this) }>
 		{ content }
-	    </div>
+	    </Panel>
 	);
 	
 	return weatherBox;

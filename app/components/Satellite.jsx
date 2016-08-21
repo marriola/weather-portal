@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "decorators";
+import Panel from "components/Panel";
 
 @connect("satellite")
 class Satellite extends React.Component {
@@ -41,10 +42,9 @@ class Satellite extends React.Component {
         }
         
         return (
-            <div className="float box">
-                <h4>Satellite</h4>
+            <Panel title="Satellite" shade={ true }>
                 { content }
-            </div>
+            </Panel>
         );
     }
 
