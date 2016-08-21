@@ -54,15 +54,17 @@ export default class Panel extends React.Component {
     }
     
     render() {
-        let classes = [
+        let classList = [
             "float",
             "box",
-            this.state.shade ? "shade" : "",
-            this.props.className
+            this.props.className,
+            this.state.shade ? "shade" : null
         ];
+
+        let classes = classList.filter(x => !!x).join(" ");
         
         return (
-            <div className={ classes.join(" ") }>
+            <div className={ classes }>
                 <Header title={ this.props.title }
                         showShade={ this.props.shade }
                         shade={ this.state.shade }

@@ -117,7 +117,9 @@ export default class PlaceBox extends React.Component {
         }
 
 	let weatherBox = (
-            <Panel className="conditions" title={ this.props.place.displayName } showShade={ false } close={ this.remove.bind(this) }>
+            <Panel className="conditions"
+                   title={ this.props.place.displayName }
+                   close={ this.remove.bind(this) }>
 		{ content }
 	    </Panel>
 	);
