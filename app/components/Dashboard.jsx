@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'decorators';
-import UI from 'action-creators/ui';
+import Actions from "action-creators";
 import PlacesContainer from 'components/Places';
 import ErrorList from 'components/ErrorList';
 
@@ -11,7 +11,7 @@ export default class Dashboard extends React.Component {
     }
 
     toggle(state) {
-        this.props.dispatch(UI.toggleDashboard(state));
+        this.props.dispatch(Actions.UI.toggleDashboard(state));
     }
     
     render() {

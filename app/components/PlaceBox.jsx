@@ -1,7 +1,6 @@
 import React from "react";
 import { Place, PlaceStatus } from "place";
-import ActivePlaceAC from "action-creators/active-place";
-import PlacesAC from "action-creators/places";
+import Actions from "action-creators";
 import { wuCountryCodeToName } from "country-codes";
 import { store } from "initialize";
 
@@ -48,23 +47,23 @@ export default class PlaceBox extends React.Component {
     }
 
     update() {
-	this.props.dispatch(PlacesAC.update(this.props.place.key, { "status": PlaceStatus.loading }));
+	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
 	this.props.place.weather.getConditions()
             .then(response => {
                 let activePlace = store.getState().activePlace.place;
                 
                 if (activePlace && this.props.place.key === activePlace.key) {
-                    this.props.dispatch(ActivePlaceAC.set(this.props.place));
+                    this.props.dispatch(Actions.ActivePlace.set(this.props.place));
                 }
             });
     }
 
     peek() {
-        this.props.dispatch(ActivePlaceAC.set(this.props.place));
+        this.props.dispatch(Actions.ActivePlace.set(this.props.place));
     }
 
     chooseCity(zmw) {
-        this.props.dispatch(PlacesAC.update(this.props.place.key, {
+        this.props.dispatch(Actions.Places.update(this.props.place.key, {
             status: PlaceStatus.loading,
             zmw
         }));
@@ -127,7 +126,7 @@ export default class PlaceBox extends React.Component {
 	    this.props.place.weather.init(this.props.place);
 	    this.props.place.weather.getConditions()
                 .then((response => {
-		    this.props.dispatch(PlacesAC.load(this.props.place.key, response));
+		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
                 }).bind(this));
 	}
     }

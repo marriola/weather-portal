@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "decorators";
 import { Place, PlaceStatus } from "place";
-import PlacesAC from "action-creators/places";
+import Actions from "action-creators";
 import PlaceBox from "components/PlaceBox";
 
 
@@ -24,7 +24,7 @@ class AddPlace extends React.Component {
     }
 
     addNew() {
-	this.props.dispatch(PlacesAC.add(this.state.newPlace));
+	this.props.dispatch(Actions.Places.add(this.state.newPlace));
 
 	this.setState({ newPlace: "" });
     }
@@ -88,11 +88,11 @@ class PlacesContainer extends React.Component {
     }
 
     addPlace(place) {
-	this.props.dispatch(PlacesAC.add(new Place(place.city, place.state)));
+	this.props.dispatch(Actions.Places.add(new Place(place.city, place.state)));
     }
 
     removePlace(place) {
-	this.props.dispatch(PlacesAC.remove(place.key));
+	this.props.dispatch(Actions.Places.remove(place.key));
     }
 
     render() {

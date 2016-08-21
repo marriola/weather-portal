@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "decorators";
-import SatelliteAC from "action-creators/satellite";
 
 @connect("satellite")
 class Satellite extends React.Component {
