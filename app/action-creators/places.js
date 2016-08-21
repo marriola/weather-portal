@@ -19,7 +19,7 @@ export default {
 	};
     },
 
-    update: function (key, obj) {
+    update: function (key, obj, response) {
         return {
             type: places.action("update"),
             key,

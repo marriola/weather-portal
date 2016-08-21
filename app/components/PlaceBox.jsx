@@ -67,7 +67,9 @@ export default class PlaceBox extends React.Component {
             status: PlaceStatus.loading,
             zmw
         }));
-	this.props.place.weather.getConditions();
+	this.props.place.weather.getConditions().then((response => {
+	    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+        }).bind(this));
     }
 
     render() {
@@ -124,10 +126,9 @@ export default class PlaceBox extends React.Component {
     componentDidMount() {
 	if (this.props.place.status == PlaceStatus.loading) {
 	    this.props.place.weather.init(this.props.place);
-	    this.props.place.weather.getConditions()
-                .then((response => {
-		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-                }).bind(this));
+	    this.props.place.weather.getConditions().then((response => {
+		this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+            }).bind(this));
 	}
     }
 }
