@@ -1,18 +1,18 @@
 import React from "react";
 
-class Header extends React.Component {
-    button({ show, state, click, onClass, offClass }) {
-        let classes = "fa " + (state ? onClass : offClass);
-        
-        return show ? (
-            <a className="button" onClick={ click }>
-                <i className={ classes }></i>
-            </a>
-        ) : null;
-    }
+function button({ show, state, click, onClass, offClass }) {
+    let classes = "fa " + (state ? onClass : offClass);
     
+    return show ? (
+        <a className="button" onClick={ click }>
+            <i className={ classes }></i>
+        </a>
+    ) : null;
+}
+
+class Header extends React.Component {
     render() {
-        let shadeButton = this.button({
+        let shadeButton = button({
             show: this.props.showShade,
             state: this.props.shade,
             click: this.props.toggleShade,
@@ -20,7 +20,7 @@ class Header extends React.Component {
             offClass: "fa-minus"
         });
 
-        let closeButton = this.button({
+        let closeButton = button({
             show: !!this.props.close,
             state: true,
             click: this.props.close,
