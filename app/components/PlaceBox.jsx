@@ -8,7 +8,7 @@ import { wuCountryCodeToName } from "country-codes";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-let Conditions = ({ countryName, conditions }) => {
+let Conditions = ({ countryName, conditions, ...props }) => {
     let zip = conditions.display_location.zip;
     if (zip === "00000")
         zip = null;
@@ -19,11 +19,25 @@ let Conditions = ({ countryName, conditions }) => {
 	    { zip }
 
 	    <ul className="bulletless">
-		<li>{ conditions.weather }</li>
-		<li>{ conditions.temp_f } &deg;F</li>
-                <li>Feels like { conditions.feelslike_f } &deg;F</li>
+		<li>
+                    { conditions.weather }
+                </li>
+		<li>
+                    { conditions.temp_f } &deg;F
+                </li>
+                <li>
+                    Feels like { conditions.feelslike_f } &deg;F
+                </li>
 	    </ul>
-	</div>
+
+	    <button onClick={ props.refresh }>
+                Refresh
+            </button>
+
+            <button onClick={ props.peek }>
+                Details
+            </button>
+        </div>
     );
 }
 
@@ -58,19 +72,12 @@ export default class PlaceBox extends React.Component {
 
     // Initiates a refresh
     refresh() {
-	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
-        
-	this.props.getConditions(this.props.place)
-            .then(response => {
-                let activePlace = store.getState().activePlace.place;
-                
-                if (activePlace && this.props.place.key === activePlace.key) {
-                    this.props.dispatch(Actions.ActivePlace.set(this.props.place));
-                }
-            });
+	this.props.dispatch(Actions.Places.update(this.props.place.key, {
+            "status": PlaceStatus.loading
+        }));
     }
 
-    // Calls out to service, which will then update our place
+    // When status is set to loading, call out to provider to get conditions
     update() {
 	if (this.props.place.status == PlaceStatus.loading) {
 	    this.props.getConditions(this.props.place).then((response => {
@@ -116,21 +123,11 @@ export default class PlaceBox extends React.Component {
                 break;   
                 
             case PlaceStatus.loaded:
-                content = (
-                    <div>
-                        <Conditions conditions={ this.props.place.conditions.current_observation }
-                                    countryName={ wuCountryCodeToName(this.props.place.country) }
-                        />
-
-                        <button onClick={ this.refresh.bind(this) }>
-                            Refresh
-                        </button>
-
-                        <button onClick={ this.peek.bind(this) }>
-                            Details
-                        </button>
-                    </div>
-                );
+                content = <Conditions conditions={ this.props.place.conditions.current_observation }
+                                      countryName={ wuCountryCodeToName(this.props.place.country) }
+                                      refresh={ this.refresh.bind(this) }
+                                      peek={ this.peek.bind(this) }
+                        />;
                 break;
                 
             default:
