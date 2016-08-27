@@ -67,6 +67,7 @@ class PlaceList extends React.Component {
 		      place={ place }
 		      remove={ this.props.remove }
 		      dispatch={ this.props.dispatch }
+                      getConditions={ this.props.getConditions }
 	    />
 	));
 
@@ -101,7 +102,7 @@ class PlacesContainer extends React.Component {
 	        <AddPlace places={ this.props.places } add={ this.addPlace.bind(this) } />
 
                 <div className="placeBox">
-	            <PlaceList remove={ this.removePlace.bind(this) } />
+	            <PlaceList remove={ this.removePlace.bind(this) } getConditions={ this.props.getConditions } />
 	        </div>
             </div>
         );

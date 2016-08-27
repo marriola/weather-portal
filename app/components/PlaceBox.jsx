@@ -40,17 +40,18 @@ class Conditions extends React.Component {
 
 export default class PlaceBox extends React.Component {
     constructor(props) {
-	super(props);
+	super(props);        
     }
 
     remove() {
 	this.props.remove(this.props.place);
     }
 
-    update() {
+    // Initiates a refresh
+    refresh() {
 	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
         
-	this.props.place.weather.getConditions()
+	this.props.getConditions(this.props.place)
             .then(response => {
                 let activePlace = store.getState().activePlace.place;
                 
@@ -58,6 +59,18 @@ export default class PlaceBox extends React.Component {
                     this.props.dispatch(Actions.ActivePlace.set(this.props.place));
                 }
             });
+    }
+
+    // Calls out to service, which will then update our place
+    update() {
+	if (this.props.place.status == PlaceStatus.loading) {
+	    this.props.getConditions(this.props.place).then((response => {
+                if (response)
+		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+                else
+                    this.remove();
+            }).bind(this));
+	}
     }
 
     peek() {
@@ -70,12 +83,12 @@ export default class PlaceBox extends React.Component {
             zmw
         }));
         
-	this.props.place.weather.getConditions().then((response => {
-            if (response)
-	        this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-            else
-                this.remove();
-        }).bind(this));
+	/* this.props.getConditions(this.props.place).then((response => {
+         *     if (response)
+	   this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+         *     else
+         *         this.remove();
+         * }).bind(this));*/
     }
 
     render() {
@@ -111,8 +124,8 @@ export default class PlaceBox extends React.Component {
                 <div>
                     { top }
 
-                    <button onClick={ this.update.bind(this) }>
-                        Update
+                    <button onClick={ this.refresh.bind(this) }>
+                        Refresh
                     </button>
                     
                     <button onClick={ this.peek.bind(this) }>
@@ -134,14 +147,10 @@ export default class PlaceBox extends React.Component {
     }
 
     componentDidMount() {
-	if (this.props.place.status == PlaceStatus.loading) {
-	    this.props.place.weather.init(this.props.place);
-	    this.props.place.weather.getConditions().then((response => {
-                if (response)
-		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-                else
-                    this.remove();
-            }).bind(this));
-	}
+        this.update();
+    }
+
+    componentDidUpdate() {
+        this.update();
     }
 }

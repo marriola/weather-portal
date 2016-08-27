@@ -1,5 +1,4 @@
 import { titleCase, uniqueIdentifier } from "utils";
-import WeatherClient from "weather-client";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +19,6 @@ class Place {
     constructor(location) {
 	this.key = uniqueIdentifier();
 	this.status = PlaceStatus.loading;
-	this.weather = new WeatherClient();
 
 	if (location.includes(",")) {
 	    let [city, state] = location.split(",").map(x => x.trim());

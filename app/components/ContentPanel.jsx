@@ -18,7 +18,7 @@ export default class ContentPanel extends React.Component {
                     </div>
                     
                     <Conditions place={ this.props.content.place } />
-                    <Satellite weather={ this.props.content.weather } />
+                    <Satellite getSatellite={ this.props.getSatellite } />
                 </div>
             );
         }

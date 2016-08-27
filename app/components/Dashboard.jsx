@@ -21,7 +21,7 @@ export default class Dashboard extends React.Component {
         return (
             <div className="dashboard">
                 <div className={ containerClass }>
-                    <PlacesContainer />
+                    <PlacesContainer getConditions={ this.props.getConditions } />
                     <ErrorList />
                 </div>
                 
