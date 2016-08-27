@@ -25,17 +25,9 @@ export default class WeatherProvider extends React.Component {
         this.render = this.render.bind(this);
     }
 
-    getConditions(place, tries = 0) {
-	if (tries == MAX_TRIES) {
-	    this.props.dispatch(Actions.Places.fail(place.key));
-	    return;
-	}
-	
-	let path = this.queryPath(place, "conditions");
-
-	return Axios
-	    .get(path)
-	    .then(response => {
+    getConditions(place) {
+        return this.get(place, "conditions")
+            .then(response => {
                 if (response.data.response.error) {
                     this.props.dispatch(Actions.Errors.add(response.data.response.error.description));
                     return null;
@@ -56,33 +48,19 @@ export default class WeatherProvider extends React.Component {
                 }
 
                 return response.data;
-	    })
-	    .catch(error => {
-		if (error.message == "Network Error") {
-		    this.getConditions(place, ++tries);
-		    /* } else {
-                     *     /* this.props.dispatch(Actions.Errors.add(error.message));
-                    *     console.log(error.message);*/
-                }
-	    });
+            })
+            .catch(error => {
+                this.props.dispatch(Actions.Places.fail(place.key));
+            });
     }
 
-    getSatellite (place, tries = 0) {
-        if (tries == MAX_TRIES) {
-            this.props.dispatch(Actions.Satellite.update({
-                status: 2
-            }));
-        }
-        
-        let path = this.queryPath(place, "satellite");
-
+    getSatellite (place) {
         this.props.dispatch(Actions.Satellite.update({
             refresh: false,
             status: 0
         }));
 
-        return Axios
-            .get(path)
+        return this.get(place, "satellite")
             .then(response => {
                 this.props.dispatch(Actions.Satellite.update({
                     status: 1,
@@ -90,8 +68,24 @@ export default class WeatherProvider extends React.Component {
                 }));
             })
             .catch(error => {
+                this.props.dispatch(Actions.Satellite.update({
+                    status: 2
+                }));                
+            });
+    }
+
+    get (place, feature, promise = null, tries = 0) {
+        let path = this.queryPath(place, feature);
+        promise = promise || Axios.get(path);
+
+        if (tries == MAX_TRIES) {
+            throw "Max tries exceeded";
+        }
+        
+        return promise
+            .catch(error => {
 		if (error.message == "Network Error") {
-		    this.getSatellite(place, ++tries);
+		    this.get(place, feature, promise, ++tries);
 		} else {
                     /* this.props.dispatch(Actions.Errors.add(error.message));*/
                     console.log(error.message);
@@ -100,10 +94,6 @@ export default class WeatherProvider extends React.Component {
     }
     
     queryPath(place, feature) {
-        /* let place = this.state.places.filter(x => x.key === place.key)[0];
-         * if (!place)
-         *     return;*/
-        
         let path = `${WEATHER_API_BASE}/${this.props.apiKey}/${feature}/q/`;
 
         if (place.zmw) {
