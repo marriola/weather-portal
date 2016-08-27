@@ -49,6 +49,7 @@ export default class PlaceBox extends React.Component {
 
     update() {
 	this.props.dispatch(Actions.Places.update(this.props.place.key, { "status": PlaceStatus.loading }));
+        
 	this.props.place.weather.getConditions()
             .then(response => {
                 let activePlace = store.getState().activePlace.place;
@@ -68,6 +69,7 @@ export default class PlaceBox extends React.Component {
             status: PlaceStatus.loading,
             zmw
         }));
+        
 	this.props.place.weather.getConditions().then((response => {
             if (response)
 	        this.props.dispatch(Actions.Places.load(this.props.place.key, response));
@@ -83,27 +85,31 @@ export default class PlaceBox extends React.Component {
 	    content = <img className="loader" />;
         }
         else {
-            let results = this.props.place.results ? (
-                <ul>
-                    { this.props.place.results.map(place => (
-                        <li><a href="javascript:void(0)" onClick={ this.chooseCity.bind(this, place.zmw) }>
-                            { [place.city, place.state, wuCountryCodeToName(place.country)].filter(x => !!x).join(", ") }
-                        </a></li>
-                    )) }
-                </ul>
-            ) : null;
-            
-            let top = this.props.place.status == PlaceStatus.loaded ?
-                      <Conditions conditions={ this.props.place.conditions.current_observation }
+            let top = null;
+
+            if (this.props.place.status == PlaceStatus.failed) {
+                top = <div className="error">Failed</div>;
+            }
+            else if (this.props.place.status == PlaceStatus.loaded) {
+                top = <Conditions conditions={ this.props.place.conditions.current_observation }
                                   countryName={ wuCountryCodeToName(this.props.place.country) }
-                      /> :
-	              results;
+                      />;
+            }
+            else if (this.props.place.results) {
+                top = (
+                    <ul>
+                        { this.props.place.results.map(place => (
+                              <li><a href="javascript:void(0)" onClick={ this.chooseCity.bind(this, place.zmw) }>
+                                  { [place.city, place.state, wuCountryCodeToName(place.country)].filter(x => !!x).join(", ") }
+                              </a></li>
+                          )) }
+                    </ul>
+                );
+            }
 
             content = (
                 <div>
-                    { this.props.place.status == PlaceStatus.failed ?
-                      <div className="error">Failed</div> :
-                      top }
+                    { top }
 
                     <button onClick={ this.update.bind(this) }>
                         Update
