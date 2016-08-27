@@ -1,41 +1,39 @@
 import React from "react";
 
-function button({ show, state, click, onClass, offClass }) {
-    let classes = "fa " + (state ? onClass : offClass);
-    
-    return show ? (
-        <a className="button" onClick={ click }>
-            <i className={ classes }></i>
-        </a>
-    ) : null;
-}
-
-class Header extends React.Component {
-    render() {
-        let shadeButton = button({
-            show: this.props.showShade,
-            state: this.props.shade,
-            click: this.props.toggleShade,
-            onClass: "fa-plus",
-            offClass: "fa-minus"
-        });
-
-        let closeButton = button({
-            show: !!this.props.close,
-            state: true,
-            click: this.props.close,
-            onClass: "fa-times"
-        });
+let Button = ({ show, state, click, onClass, offClass }) => {
+    if (show) {
+        let classes = "fa " + (state ? onClass : offClass);        
         
         return (
-            <div className="header">
-                { this.props.title }
-                { closeButton }
-                { shadeButton }
-            </div>
+            <a className="button" onClick={click}>
+                <i className={classes}></i>
+            </a>
         );
     }
-}
+    else {
+        return null;
+    }
+};
+
+let Header = ({ title, showShade, shadeState, toggleShade, close }) => {
+    return (
+        <div className="header">
+            { title }
+            
+            <Button show={ !!close }
+                    state={true}
+                    click={close}
+                    onClass="fa-times"
+            />
+            
+            <Button show={showShade}
+                    state={shadeState}
+                    click={toggleShade}
+                    onClass="fa-plus"
+                    offClass="fa-minus" />
+        </div>
+    );
+};
 
 export default class Panel extends React.Component {
     constructor(props) {
@@ -70,6 +68,7 @@ export default class Panel extends React.Component {
                         shade={ this.state.shade }
                         toggleShade={ this.toggleShade.bind(this) }
                         close={ this.props.close }/>
+                
                 <div className="body">
                     { this.props.children }
                 </div>

@@ -7,7 +7,6 @@ import PlaceBox from "components/PlaceBox";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@connect("places")
 class AddPlace extends React.Component {
     constructor(props) {
 	super(props);
@@ -55,7 +54,6 @@ class AddPlace extends React.Component {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-@connect("places")
 class PlaceList extends React.Component {
     constructor(props) {
 	super(props);
@@ -99,10 +97,15 @@ class PlacesContainer extends React.Component {
     render() {
 	return (
             <div>
-	        <AddPlace places={ this.props.places } add={ this.addPlace.bind(this) } />
+	        <AddPlace places={ this.props.places }
+                          dispatch={ this.props.dispatch }
+                          add={ this.addPlace.bind(this) } />
 
                 <div className="placeBox">
-	            <PlaceList remove={ this.removePlace.bind(this) } getConditions={ this.props.getConditions } />
+	            <PlaceList places={ this.props.places }
+                               dispatch={ this.props.dispatch }
+                               remove={ this.removePlace.bind(this) }
+                               getConditions={ this.props.getConditions } />
 	        </div>
             </div>
         );

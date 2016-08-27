@@ -6,5 +6,11 @@ export default {
             type: satellite.action("update"),
             props
         };
+    },
+
+    fail: function () {
+        return {
+            type: satellite.action("fail")
+        }
     }
 };

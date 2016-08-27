@@ -2,16 +2,16 @@ import React from "react";
 import { connect } from "decorators";
 import Panel from "components/Panel";
 
+let SatelliteStatus = {
+    loading: 0,
+    loaded: 1,
+    failed: 2
+};
+
 @connect("satellite")
 class Satellite extends React.Component {
     constructor (props) {
         super(props);
-
-        this.Status = {
-            loading: 0,
-            loaded: 1,
-            failed: 2
-        };
     }
 
     update () {
@@ -24,11 +24,11 @@ class Satellite extends React.Component {
         let content;
 
         switch (this.props.satellite.status) {
-            case this.Status.loading:
+            case SatelliteStatus.loading:
                 content = (<img src="ajax-loader.gif" />);
                 break;
 
-            case this.Status.loaded:
+            case SatelliteStatus.loaded:
                 content = (
                     <div>
                         { this.props.satellite.pics ? <img src={ this.props.satellite.pics.image_url } /> : null }
@@ -36,7 +36,7 @@ class Satellite extends React.Component {
                 );
                 break;
 
-            case this.Status.failed:
+            case SatelliteStatus.failed:
                 content = (<span className="error">Failed</span>);
                 break;
         }
@@ -56,5 +56,7 @@ class Satellite extends React.Component {
         this.update();
     }
 }
+
+export { SatelliteStatus };
 
 export default Satellite;

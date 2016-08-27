@@ -14,6 +14,13 @@ export default createReducer({
                 ...state,
                 ...action.props
             };
+        },
+
+        fail: function (state, action) {
+            return {
+                ...state,
+                status: 2
+            };
         }
     },
 

@@ -6,6 +6,11 @@ import { wuCountryCodeToName } from 'country-codes';
 
 @connect("content")
 export default class ContentPanel extends React.Component {
+    refresh() {
+        this.props.getConditions(this.props.content.place);
+        this.props.getSatellite(this.props.content.place);
+    }
+
     render() {
         let content;
 
@@ -13,7 +18,14 @@ export default class ContentPanel extends React.Component {
             content = (
                 <div>
                     <div className="panel top center">
-                        <h2>{ this.props.content.place.displayName }</h2>
+                        <h2>
+                            { this.props.content.place.displayName }
+                            <button className="small margin-left-10"
+                                    onClick={ this.refresh.bind(this) }>
+                                Refresh
+                            </button>
+                        </h2>
+                        
                         <h3>{ wuCountryCodeToName(this.props.content.place.country) }</h3>
                     </div>
                     

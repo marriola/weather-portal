@@ -67,7 +67,7 @@ export default class PlaceBox extends React.Component {
 	    this.props.getConditions(this.props.place).then((response => {
                 if (response)
 		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-                else
+                else // If null was returned, then there was an error.
                     this.remove();
             }).bind(this));
 	}
@@ -82,13 +82,6 @@ export default class PlaceBox extends React.Component {
             status: PlaceStatus.loading,
             zmw
         }));
-        
-	/* this.props.getConditions(this.props.place).then((response => {
-         *     if (response)
-	   this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-         *     else
-         *         this.remove();
-         * }).bind(this));*/
     }
 
     render() {
@@ -129,7 +122,7 @@ export default class PlaceBox extends React.Component {
                     </button>
                     
                     <button onClick={ this.peek.bind(this) }>
-                        Peek
+                        Details
                     </button>
                 </div>
             );
