@@ -1,10 +1,10 @@
 import React from "react";
 import Axios from "axios";
+import store from "initialize";
 import { connect } from "decorators";
 import Actions from "action-creators";
 import { PlaceStatus } from "place";
 import { SatelliteStatus } from "components/Satellite";
-import { store } from "initialize";
 
 ////////////////////////////////////////////////////////////////////////////////
 

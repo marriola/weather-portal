@@ -1,4 +1,4 @@
-import { store } from "initialize";
+import store from "initialize";
 import errors from "reducers/errors";
 
 let Errors = {

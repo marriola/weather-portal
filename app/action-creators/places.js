@@ -1,4 +1,4 @@
-import { store } from "initialize";
+import store from "initialize";
 import Errors from "action-creators/errors";
 import places from "reducers/places";
 

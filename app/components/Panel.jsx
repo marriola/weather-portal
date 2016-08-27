@@ -30,7 +30,8 @@ let Header = ({ title, showShade, shadeState, toggleShade, close }) => {
                     state={shadeState}
                     click={toggleShade}
                     onClass="fa-plus"
-                    offClass="fa-minus" />
+                    offClass="fa-minus"
+            />
         </div>
     );
 };

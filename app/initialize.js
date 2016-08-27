@@ -9,4 +9,4 @@ document.addEventListener("DOMContentLoaded", () => {
     ReactDOM.render(<Application store={ store } />, document.getElementById("app"));
 });
 
-export { store };
+export default store;
