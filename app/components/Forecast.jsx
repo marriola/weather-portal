@@ -22,35 +22,39 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
     let high = fahrenheit ? +today.high.fahrenheit : +today.high.celsius;
     let low = fahrenheit ? +today.low.fahrenheit : +today.low.celsius;
     let deg = fahrenheit ? "F" : "C";
+    let color = { red: 128, green: 128, blue: 128 };
+    let diff;
+    let style;
 
-    let diff = ((high - averages.high) + (low - averages.low)) / 2;
-    let sign = diff > 0 ? "+" : "";
-    let d = Math.floor(diff * 5);
+    if (!isNaN(averages.high)) {
+        let d = ((high - averages.high) + (low - averages.low)) / 2;
+        let sign = (d > 0 ? "+" : "");
+        diff = <span className="small">({sign}{d})</span>;
+        let dcolor = Math.floor(d * 5);
 
-    let color = {
-        red: 128 + d,
-        green: 128 - Math.abs(d),
-        blue: 128 + -d
-    };
+        color.red += dcolor;
+        color.green -= Math.abs(dcolor);
+        color.blue -= dcolor;
+        
+        for (let key in color) {
+            if (color[key] < 0)
+                color[key] = 0;
 
-    for (let key in color) {
-        if (color[key] < 0)
-            color[key] = 0;
+            if (color[key] > 255)
+                color[key] = 255;
+        }
 
-        if (color[key] > 255)
-            color[key] = 255;
+        let hexColor = zeroPad(color.red.toString(16)) +
+                       zeroPad(color.green.toString(16)) +
+                       zeroPad(color.blue.toString(16))
+
+        style = { backgroundColor: "#" + hexColor };
     }
-
-    let hexColor = zeroPad(color.red.toString(16)) +
-                   zeroPad(color.green.toString(16)) +
-                   zeroPad(color.blue.toString(16))
-
-    let style = { backgroundColor: "#" + hexColor };
     
     return (
         <div className="forecast-segment" style={style}>
             <b>{date}</b><br/>
-            <span className="small">({sign}{diff})</span><br/>
+            {diff}<br/>
             <b>{today.conditions}</b><br/>
             High: {high} &deg;{deg}<br/>
             Low: {low} &deg;{deg}<br/>
@@ -84,8 +88,8 @@ export default class Forecast extends React.Component {
             let deg = fahrenheit ? "F" : "C";
 
             let averages = {
-                high: fahrenheit ? +almanac.temp_high.normal.F : +almanac.temp_high.normal.C,
-                low: fahrenheit ? +almanac.temp_low.normal.F : +almanac.temp_low.normal.C
+                high: parseInt(fahrenheit ? almanac.temp_high.normal.F : almanac.temp_high.normal.C),
+                low: parseInt(fahrenheit ? almanac.temp_low.normal.F : almanac.temp_low.normal.C)
             };
 
             let dayElements = days.map(day =>
@@ -101,10 +105,11 @@ export default class Forecast extends React.Component {
                         {dayElements}
                     </nobr>
                     
-                    <div>
-                        Avg High: {averages.high} &deg;{deg}<br/>
-                        Avg Low: {averages.low} &deg;{deg}
-                    </div>            
+                    { isNaN(averages.high) ? null :
+                      <div>
+                          Avg High: {averages.high} &deg;{deg}<br/>
+                          Avg Low: {averages.low} &deg;{deg}
+                      </div> }
                 </div>
             );
         }

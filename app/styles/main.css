@@ -78,8 +78,9 @@ button:active {
 }
 
 .dashboard .container {
-    height: 175px;
-    transition-property: all;
+    /*height: 175px;*/
+    max-height: 500px;
+    transition-property: max-height; /*all;*/
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
     overflow: hidden;
@@ -96,7 +97,8 @@ button:active {
 }
 
 .dashboard .container.closed {
-    height: 0px;
+    /*height: 0px;*/
+    max-height: 0px;
 }
 
 .dashboard .expander {
