@@ -80,11 +80,14 @@ export default class PlaceBox extends React.Component {
     // When status is set to loading, call out to provider to get conditions
     update() {
 	if (this.props.place.status == PlaceStatus.loading) {
-	    this.props.getConditions(this.props.place).then((response => {
-                if (response)
+	    this.props.weather.getConditions(this.props.place).then((response => {
+                if (response) {
 		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
-                else if (this.props.place.status == PlaceStatus.loading) // If null was returned, then there was an error.
+                }
+                else { //if (this.props.place.status == PlaceStatus.loading)
+                    // If null was returned, then there was an error.
                     this.remove();
+                }
             }).bind(this));
 	}
     }

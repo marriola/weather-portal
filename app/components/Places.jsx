@@ -54,28 +54,18 @@ class AddPlace extends React.Component {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class PlaceList extends React.Component {
-    constructor(props) {
-	super(props);
-    }
-
-    render() {
-	let placeBoxes = this.props.places.map(place => (
-	    <PlaceBox key={ place.key }
-		      place={ place }
-		      remove={ this.props.remove }
-		      dispatch={ this.props.dispatch }
-                      getConditions={ this.props.getConditions }
-	    />
-	));
-
-	return (
-	    <div>
-		{ placeBoxes }
-	    </div>
-	);
-    }
-}
+let PlaceList = ({ places, ...props }) => (
+    <div>
+        { places.map(place =>
+              <PlaceBox key={ place.key }
+		        place={ place }
+		        remove={ props.remove }
+		        dispatch={ props.dispatch }
+                        weather={ props.weather }
+              />
+          ) }
+    </div>
+);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +95,7 @@ class PlacesContainer extends React.Component {
 	            <PlaceList places={ this.props.places }
                                dispatch={ this.props.dispatch }
                                remove={ this.removePlace.bind(this) }
-                               getConditions={ this.props.getConditions } />
+                               weather={ this.props.weather } />
 	        </div>
             </div>
         );

@@ -292,3 +292,17 @@ tr:nth-child(odd) {
 .margin-left-10 {
     margin-left: 10px;
 }
+
+.forecast-segment {
+    display: inline-block;
+    padding: 3px;
+}
+
+.forecast-segment:not(:first-child) {
+    margin-left: 3px;
+}
+
+.half-width {
+    display: inline-block;
+    width: 50%;
+}

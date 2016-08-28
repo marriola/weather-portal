@@ -3,11 +3,24 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 // exercise to sharpen your understanding on middlewares.
 import promiseMiddleware from './promise-middleware'
 import activePlace from 'reducers/active-place';
+import almanac from 'reducers/almanac';
 import content from 'reducers/content';
 import errors from 'reducers/errors';
+import forecast from 'reducers/forecast';
 import places from 'reducers/places';
 import satellite from 'reducers/satellite';
 import ui from 'reducers/ui';
+
+let reducers = {
+    activePlace,
+    almanac,
+    content,
+    errors,
+    forecast,
+    places,
+    satellite,
+    ui
+};
 
 // The data parameter that we see here is used to initialize our redux store with data. We didn't
 // talk about this yet for simplicity but thanks to it your reducers can be initialized
@@ -16,7 +29,7 @@ import ui from 'reducers/ui';
 // initialized with that data.
 // We're not passing any data here but it's good to know about this createStore's ability.
 export default function(data) {
-    var reducer = combineReducers({ activePlace, content, errors, places, satellite, ui });
+    var reducer = combineReducers(reducers);
     /* var finalCreateStore = applyMiddleware(promiseMiddleware)(createStore)
      * var store = finalCreateStore(reducer, data)*/
     var store = createStore(reducer, data, compose(

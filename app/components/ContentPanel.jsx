@@ -1,14 +1,15 @@
 import React from 'react';
 import Satellite from 'components/Satellite';
 import Conditions from 'components/Conditions';
+import Forecast from 'components/Forecast';
 import { connect } from 'decorators';
 import { wuCountryCodeToName } from 'country-codes';
 
 @connect("content")
 export default class ContentPanel extends React.Component {
     refresh() {
-        this.props.getConditions(this.props.content.place);
-        this.props.getSatellite(this.props.content.place);
+        this.props.weather.getConditions(this.props.content.place);
+        this.props.weather.getSatellite(this.props.content.place);
     }
 
     render() {
@@ -30,7 +31,9 @@ export default class ContentPanel extends React.Component {
                     </div>
                     
                     <Conditions place={ this.props.content.place } />
-                    <Satellite getSatellite={ this.props.getSatellite } />
+                    <Satellite weather={ this.props.weather } />
+                    <Forecast place={ this.props.content.place }
+                              weather={ this.props.weather } />
                 </div>
             );
         }

@@ -16,7 +16,7 @@ class Satellite extends React.Component {
 
     update () {
         if (this.props.satellite.place && this.props.satellite.refresh) {
-            this.props.getSatellite(this.props.satellite.place);
+            this.props.weather.getSatellite(this.props.satellite.place);
         }
     }
     

@@ -5,6 +5,8 @@ import { connect } from "decorators";
 import Actions from "action-creators";
 import { PlaceStatus } from "place";
 import { SatelliteStatus } from "components/Satellite";
+import { AlmanacStatus } from "almanac";
+import { ForecastStatus } from "components/Forecast";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -70,6 +72,33 @@ export default class WeatherProvider extends React.Component {
             });
     }
 
+    getAlmanac (place) {
+        return this.get(place, "almanac")
+                   .then(response => {
+                       store.dispatch(Actions.Almanac.update({
+                           status: AlmanacStatus.loaded,
+                           almanac: response.data.almanac
+                       }));
+                   });
+    }
+
+    getForecast (place) {
+        store.dispatch(Actions.Forecast.update({
+            refresh: false,
+            status: ForecastStatus.loading
+        }));
+
+        return this.getAlmanac(place)
+                   .then(() =>
+                       this.get(place, "forecast")
+                           .then(response => {
+                               store.dispatch(Actions.Forecast.update({
+                                   status: ForecastStatus.loaded,
+                                   days: response.data.forecast.simpleforecast.forecastday
+                               }));
+                           }));
+    }
+
     get (place, feature, promise = null, tries = 0) {
         if (tries == this.props.maxTries) {
             throw "Max tries exceeded";
@@ -94,20 +123,24 @@ export default class WeatherProvider extends React.Component {
         if (place.zmw) {
             path += `zmw:${place.zmw}`;
         }
-	else if (place.city) {
+        else if (place.city) {
 	    path += `${place.state}/${place.city}`;
-	} else {
+        } else {
 	    path += place.zip;
-	}
+        }
 
-	return path + ".json";
+        return path + ".json";
     }
-
+    
     render() {
-        let children = React.Children.map(this.props.children,x => !x.props.receiveWeather ? x :
+        let children = React.Children.map(this.props.children, x => !x.props.weather ? x :
             React.cloneElement(x, {
-                getConditions: this.getConditions.bind(this),
-                getSatellite: this.getSatellite.bind(this)
+                weather: {
+                    getAlmanac: this.getAlmanac.bind(this),
+                    getConditions: this.getConditions.bind(this),
+                    getForecast: this.getForecast.bind(this),
+                    getSatellite: this.getSatellite.bind(this)
+                }
             }));
         
         if (children.length == 0) {
