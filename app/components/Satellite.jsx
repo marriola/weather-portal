@@ -42,7 +42,7 @@ class Satellite extends React.Component {
         }
         
         return (
-            <Panel title="Satellite" shade={ true }>
+            <Panel title="Satellite" shade={ true } noFloat={ true }>
                 { content }
             </Panel>
         );

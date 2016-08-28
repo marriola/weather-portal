@@ -10,7 +10,7 @@ export default class Conditions extends React.Component {
         let style = {}; //{ position: "absolute" };
         
         return (
-            <div className="panel left" style={ style }>
+            <div className="panel" style={ style }>
                 <table>
                     <tbody>
                         <tr>

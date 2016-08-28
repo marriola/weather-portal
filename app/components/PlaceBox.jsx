@@ -49,7 +49,7 @@ let SearchResults = ({ pb, results, chooseCity }) => (
         {
             results.map(place => (
                 <li key={ place.zmw }>
-                    <a onClick={ chooseCity.bind(chooseCity.prototype, place.zmw) }>
+                    <a className="pointer" onClick={ chooseCity.bind(chooseCity.prototype, place.zmw) }>
                         { [place.city, place.state, wuCountryCodeToName(place.country)].filter(x => !!x).join(", ") }
                     </a>
                 </li>

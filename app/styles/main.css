@@ -1,3 +1,7 @@
+.pointer {
+    cursor: pointer;
+}
+
 body {
     margin: 0px;
     font-family: sans-serif;
@@ -112,13 +116,16 @@ button:active {
 
 .box {
     display: inline-block;
-    cursor: pointer;
     background-color: #444;
     padding: 5px;
     margin: 5px 5px 0px 0px;
     border-radius: 5px;
     min-width: 150px;
     vertical-align: top;
+}
+
+.box > .header > .button {
+    cursor: pointer;
 }
 
 .box.conditions {
@@ -128,6 +135,11 @@ button:active {
 .box.conditions > .body {
     max-height: 120px;
     overflow-y: auto;
+}
+
+.box > .body {
+    max-height: 1000px;
+    transition: 0.2s ease-in-out max-height;
 }
 
 .box.shade > .body {
@@ -296,6 +308,7 @@ tr:nth-child(odd) {
 .forecast-segment {
     display: inline-block;
     padding: 3px;
+    font-size: 85%;
 }
 
 .forecast-segment:not(:first-child) {

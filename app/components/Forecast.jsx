@@ -23,24 +23,15 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
     let low = fahrenheit ? +today.low.fahrenheit : +today.low.celsius;
     let deg = fahrenheit ? "F" : "C";
 
-    let diff = ((high + low) / 2) - ((averages.high + averages.low) / 2);
-    let color;
+    let diff = ((high - averages.high) + (low - averages.low)) / 2;
+    let sign = diff > 0 ? "+" : "";
+    let d = Math.floor(diff * 5);
 
-    if (diff == 0) {
-        color = { red: 128, green: 128, blue: 128 };
-    }
-    else {
-        color = {
-            red: 128,
-            green: 128,
-            blue: 128
-        };
-
-        let d = Math.floor(Math.abs(diff) * 5);
-        color.red += diff > 0 ? d : -d;
-        color.green -= d;
-        color.blue += diff < 0 ? d : -d;
-    }
+    let color = {
+        red: 128 + d,
+        green: 128 - Math.abs(d),
+        blue: 128 + -d
+    };
 
     for (let key in color) {
         if (color[key] < 0)
@@ -57,10 +48,13 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
     let style = { backgroundColor: "#" + hexColor };
     
     return (
-        <div className="forecast-segment" style={style} data-diff={diff}>
+        <div className="forecast-segment" style={style}>
             <b>{date}</b><br/>
+            <span className="small">({sign}{diff})</span><br/>
+            <b>{today.conditions}</b><br/>
             High: {high} &deg;{deg}<br/>
-            Low: {low} &deg;{deg}
+            Low: {low} &deg;{deg}<br/>
+            Avg Humidity: {today.avehumidity}%
         </div>
     );
 };
@@ -117,7 +111,8 @@ export default class Forecast extends React.Component {
 
         return (
             <Panel title="Forecast"
-                   shade={true}>
+                   shade={true}
+                   noFloat={true}>
                 { content }
             </Panel>
         );

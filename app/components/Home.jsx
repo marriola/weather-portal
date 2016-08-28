@@ -12,8 +12,8 @@ export default class Home extends React.Component {
 	return (
 	    <div id="content">
                 <WeatherProvider apiKey={ WEATHER_API_KEY } maxTries={ MAX_TRIES }>
-                    <Dashboard receiveWeather={true} />
-                    <ContentPanel receiveWeather={true} />
+                    <Dashboard weather={true} />
+                    <ContentPanel weather={true} />
                 </WeatherProvider>
 	    </div>
 	);

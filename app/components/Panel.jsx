@@ -54,7 +54,7 @@ export default class Panel extends React.Component {
     
     render() {
         let classList = [
-            "float",
+            this.props.noFloat ? null : "float",
             "box",
             this.props.className,
             this.state.shade ? "shade" : null
@@ -66,7 +66,7 @@ export default class Panel extends React.Component {
             <div className={ classes }>
                 <Header title={ this.props.title }
                         showShade={ this.props.shade }
-                        shade={ this.state.shade }
+                        shadeState={ this.state.shade }
                         toggleShade={ this.toggleShade.bind(this) }
                         close={ this.props.close }/>
                 
