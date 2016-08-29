@@ -5,7 +5,8 @@ import Panel from "components/Panel";
 let ForecastStatus = {
     loading: 0,
     loaded: 1,
-    error: 2
+    error: 2,
+    notfound: 3
 };
 
 function zeroPad(digit) {
@@ -78,40 +79,52 @@ export default class Forecast extends React.Component {
     render(){
         let content = null;
         
-        if (this.props.forecast.status == ForecastStatus.loading) {
-	    content = <img className="loader" />;
-        }
-        else if (this.props.forecast.status == ForecastStatus.loaded && this.props.almanac.almanac) {
-            let almanac = this.props.almanac.almanac;
-            let days = this.props.forecast.days;
-            let fahrenheit = true;
-            let deg = fahrenheit ? "F" : "C";
+        switch (this.props.forecast.status) {
+            case ForecastStatus.failed:
+                content = <span className="error">Failed</span>;
+                break;
+        
+            case ForecastStatus.notfound:
+                content = <span>Feature not available</span>;
+                break;
 
-            let averages = {
-                high: parseInt(fahrenheit ? almanac.temp_high.normal.F : almanac.temp_high.normal.C),
-                low: parseInt(fahrenheit ? almanac.temp_low.normal.F : almanac.temp_low.normal.C)
-            };
+            case ForecastStatus.loading:
+	        content = <img className="loader" />;
+                break;
 
-            let dayElements = days.map(day =>
-                <ForecastDay key={day.date.epoch}
-                             today={day}
-                             averages={averages}
-                             fahrenheit={true} />
-            );
+            case ForecastStatus.loaded:
+                if (this.props.almanac.almanac) {
+                    let almanac = this.props.almanac.almanac;
+                    let days = this.props.forecast.days;
+                    let fahrenheit = true;
+                    let deg = fahrenheit ? "F" : "C";
 
-            content = (
-                <div>
-                    <nobr>
-                        {dayElements}
-                    </nobr>
-                    
-                    { isNaN(averages.high) ? null :
-                      <div>
-                          Avg High: {averages.high} &deg;{deg}<br/>
-                          Avg Low: {averages.low} &deg;{deg}
-                      </div> }
-                </div>
-            );
+                    let averages = {
+                        high: parseInt(fahrenheit ? almanac.temp_high.normal.F : almanac.temp_high.normal.C),
+                        low: parseInt(fahrenheit ? almanac.temp_low.normal.F : almanac.temp_low.normal.C)
+                    };
+
+                    let dayElements = days.map(day =>
+                        <ForecastDay key={day.date.epoch}
+                                     today={day}
+                                     averages={averages}
+                                     fahrenheit={true} />
+                    );
+
+                    content = (
+                        <div>
+                            <nobr>
+                                {dayElements}
+                            </nobr>
+                            
+                            { isNaN(averages.high) ? null :
+                              <div>
+                                  Avg High: {averages.high} &deg;{deg}<br/>
+                                  Avg Low: {averages.low} &deg;{deg}
+                              </div> }
+                        </div>
+                    );
+                }
         }
 
         return (

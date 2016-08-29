@@ -78,9 +78,9 @@ button:active {
 }
 
 .dashboard .container {
-    /*height: 175px;*/
-    max-height: 500px;
-    transition-property: max-height; /*all;*/
+    height: 175px;
+    /*max-height: 500px;*/
+    transition-property: /*max-height;*/ all;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;
     overflow: hidden;
@@ -97,8 +97,8 @@ button:active {
 }
 
 .dashboard .container.closed {
-    /*height: 0px;*/
-    max-height: 0px;
+    height: 0px;
+    /*max-height: 0px;*/
 }
 
 .dashboard .expander {
@@ -123,6 +123,7 @@ button:active {
     margin: 5px 5px 0px 0px;
     border-radius: 5px;
     min-width: 150px;
+    max-width: 100%;
     vertical-align: top;
 }
 
@@ -142,6 +143,7 @@ button:active {
 .box > .body {
     max-height: 1000px;
     transition: 0.2s ease-in-out max-height;
+    overflow-x: auto;
 }
 
 .box.shade > .body {

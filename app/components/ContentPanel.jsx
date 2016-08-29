@@ -30,10 +30,8 @@ export default class ContentPanel extends React.Component {
                         <h3>{ wuCountryCodeToName(this.props.content.place.country) }</h3>
                     </div>
 
-                    <div style={ { float: "left" } }>
-                        <Conditions place={ this.props.content.place } />
-                    </div>
                     <div style={{ overflow: "auto" }}>
+                        <Conditions place={ this.props.content.place } />
                         <Satellite weather={ this.props.weather } />
                         <Forecast place={ this.props.content.place }
                                   weather={ this.props.weather } />

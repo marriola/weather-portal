@@ -61,24 +61,46 @@ export default class WeatherProvider extends React.Component {
         }));
 
         return this.get(place, "satellite")
-            .then(response => {
-                store.dispatch(Actions.Satellite.update({
-                    status: SatelliteStatus.loaded,
-                    pics: response.data.satellite
-                }));
-            })
-            .catch(error => {
-                store.dispatch(Actions.Satellite.fail());                
-            });
+                   .then(response => {
+                       if (response.data.response.error) {
+                           let status = SatelliteStatus.failed;
+                           
+                           if (response.data.response.error.type == "querynotfound") {
+                               status = SatelliteStatus.notfound;
+                           }
+
+                           store.dispatch(Actions.Satellite.update({ status }));
+                       }
+                       else {
+                           store.dispatch(Actions.Satellite.update({
+                               status: SatelliteStatus.loaded,
+                               pics: response.data.satellite
+                           }));
+                       }
+                   })
+                   .catch(error => {
+                       store.dispatch(Actions.Satellite.fail());                
+                   });
     }
 
     getAlmanac (place) {
         return this.get(place, "almanac")
                    .then(response => {
-                       store.dispatch(Actions.Almanac.update({
-                           status: AlmanacStatus.loaded,
-                           almanac: response.data.almanac
-                       }));
+                       if (response.data.response.error) {
+                           let status = AlmanacStatus.failed;
+                           
+                           if (response.data.response.error.type == "querynotfound") {
+                               status = AlmanacStatus.notfound;
+                           }
+                           
+                           store.dispatch(Actions.Almanac.update({ status }));
+                       }
+                       else {
+                           store.dispatch(Actions.Almanac.update({
+                               status: AlmanacStatus.loaded,
+                               almanac: response.data.almanac
+                           }));
+                       }
                    });
     }
 
@@ -92,10 +114,21 @@ export default class WeatherProvider extends React.Component {
                    .then(() =>
                        this.get(place, "forecast")
                            .then(response => {
-                               store.dispatch(Actions.Forecast.update({
-                                   status: ForecastStatus.loaded,
-                                   days: response.data.forecast.simpleforecast.forecastday
-                               }));
+                               if (response.data.response.error) {
+                                   let status = ForecastStatus.failed;
+                                   
+                                   if (response.data.response.error.type == "querynotfound") {
+                                       status = ForecastStatus.notfound;
+                                   }
+                                   
+                                   store.dispatch(Actions.Forecast.update({ status }));
+                               }
+                               else {
+                                   store.dispatch(Actions.Forecast.update({
+                                       status: ForecastStatus.loaded,
+                                       days: response.data.forecast.simpleforecast.forecastday
+                                   }));
+                               }
                            }));
     }
 

@@ -5,7 +5,8 @@ import Panel from "components/Panel";
 let SatelliteStatus = {
     loading: 0,
     loaded: 1,
-    failed: 2
+    failed: 2,
+    notfound: 3
 };
 
 @connect("satellite")
@@ -36,8 +37,12 @@ class Satellite extends React.Component {
                 );
                 break;
 
+            case SatelliteStatus.notfound:
+                content = <span>Feature not available</span>;
+                break;
+
             case SatelliteStatus.failed:
-                content = (<span className="error">Failed</span>);
+                content = <span className="error">Failed</span>;
                 break;
         }
         
