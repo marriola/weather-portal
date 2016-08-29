@@ -1,6 +1,7 @@
 import almanac from "reducers/almanac";
+import { createActionCreator } from "action-creators";
 
-export default {
+export default createActionCreator({
     update: function (props) {
         return {
             type: almanac.action("update"),
@@ -13,4 +14,4 @@ export default {
             type: almanac.action("fail")
         };
     }
-};
+});

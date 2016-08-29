@@ -1,10 +1,11 @@
 import store from "initialize";
 import Errors from "action-creators/errors";
 import places from "reducers/places";
+import { createActionCreator } from "action-creators";
 
-export default {
+export default createActionCreator({
     add: function (place) {
-	store.dispatch(Errors.clear());
+	Errors.clear();
 
 	return {
 	    type: places.action("add"),
@@ -36,7 +37,7 @@ export default {
     
     load: function (key, response) {
 	if (response.response.error) {
-	    store.dispatch(Errors.add(response.response.error.description));
+	    Errors.add(response.response.error.description);
 	    return this.remove(key);
 	}
 	
@@ -46,4 +47,4 @@ export default {
 	    response
 	};
     }
-};
+});

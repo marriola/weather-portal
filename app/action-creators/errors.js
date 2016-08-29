@@ -1,7 +1,8 @@
 import store from "initialize";
 import errors from "reducers/errors";
+import { createActionCreator } from "action-creators";
 
-let Errors = {
+export default createActionCreator({
     add: function (message) {
 	return {
 	    type: errors.action("add"),
@@ -14,6 +15,4 @@ let Errors = {
 	    type: errors.action("clear")
 	};
     }
-};
-
-export default Errors;
+});

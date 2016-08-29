@@ -23,7 +23,7 @@ class AddPlace extends React.Component {
     }
 
     addNew() {
-	this.props.dispatch(Actions.Places.add(this.state.newPlace));
+	Actions.Places.add(this.state.newPlace);
 
 	this.setState({ newPlace: "" });
     }
@@ -60,7 +60,6 @@ let PlaceList = ({ places, ...props }) => (
               <PlaceBox key={ place.key }
 		        place={ place }
 		        remove={ props.remove }
-		        dispatch={ props.dispatch }
                         weather={ props.weather }
               />
           ) }
@@ -77,23 +76,21 @@ class PlacesContainer extends React.Component {
     }
 
     addPlace(place) {
-	this.props.dispatch(Actions.Places.add(new Place(place.city, place.state)));
+	Actions.Places.add(new Place(place.city, place.state));
     }
 
     removePlace(place) {
-	this.props.dispatch(Actions.Places.remove(place.key));
+	Actions.Places.remove(place.key);
     }
 
     render() {
 	return (
             <div>
 	        <AddPlace places={ this.props.places }
-                          dispatch={ this.props.dispatch }
                           add={ this.addPlace.bind(this) } />
 
                 <div className="placeBox">
 	            <PlaceList places={ this.props.places }
-                               dispatch={ this.props.dispatch }
                                remove={ this.removePlace.bind(this) }
                                weather={ this.props.weather } />
 	        </div>

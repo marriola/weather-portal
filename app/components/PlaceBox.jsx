@@ -72,9 +72,9 @@ export default class PlaceBox extends React.Component {
 
     // Initiates a refresh
     refresh() {
-	this.props.dispatch(Actions.Places.update(this.props.place.key, {
+	Actions.Places.update(this.props.place.key, {
             "status": PlaceStatus.loading
-        }));
+        });
     }
 
     // When status is set to loading, call out to provider to get conditions
@@ -82,7 +82,7 @@ export default class PlaceBox extends React.Component {
 	if (this.props.place.status == PlaceStatus.loading) {
 	    this.props.weather.getConditions(this.props.place).then((response => {
                 if (response) {
-		    this.props.dispatch(Actions.Places.load(this.props.place.key, response));
+		    Actions.Places.load(this.props.place.key, response);
                 }
                 else { //if (this.props.place.status == PlaceStatus.loading)
                     // If null was returned, then there was an error.
@@ -93,14 +93,14 @@ export default class PlaceBox extends React.Component {
     }
 
     peek() {
-        this.props.dispatch(Actions.ActivePlace.set(this.props.place));
+        Actions.ActivePlace.set(this.props.place);
     }
 
     chooseCity(zmw) {
-        this.props.dispatch(Actions.Places.update(this.props.place.key, {
+        Actions.Places.update(this.props.place.key, {
             status: PlaceStatus.loading,
             zmw
-        }));
+        });
     }
 
     componentDidMount() {

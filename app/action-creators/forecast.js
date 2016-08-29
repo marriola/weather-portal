@@ -1,6 +1,7 @@
 import forecast from "reducers/forecast";
+import { createActionCreator } from "action-creators";
 
-export default {
+export default createActionCreator({
     update: function (props) {
         return {
             type: forecast.action("update"),
@@ -13,4 +14,4 @@ export default {
             type: forecast.action("fail")
         };
     }
-};
+});

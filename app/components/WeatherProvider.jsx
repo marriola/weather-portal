@@ -29,57 +29,54 @@ export default class WeatherProvider extends React.Component {
         return this.get(place, "conditions")
             .then(response => {
                 if (response.data.response.error) {
-                    store.dispatch(Actions.Errors.add(response.data.response.error.description));
+                    Actions.Errors.add(response.data.response.error.description);
                     return null;
                 }  
                 else if (response.data.response.results) {
                     // Got search results
                     
-                    store.dispatch(Actions.Places.update(place.key, {
+                    Actions.Places.update(place.key, {
                         status: PlaceStatus.choosing,
                         results: response.data.response.results
-                    }));
+                    });
                 }
                 else {
-		    store.dispatch(Actions.Places.update(place.key, {
+		    Actions.Places.update(place.key, {
                         "status": PlaceStatus.loaded,
                         "conditions": response.data
-                    }));
+                    });
                 }
 
                 return response.data;
             })
             .catch(error => {
-                store.dispatch(Actions.Places.fail(place.key));
+                Actions.Places.fail(place.key);
             });
     }
 
     getSatellite (place) {
-        store.dispatch(Actions.Satellite.update({
+        Actions.Satellite.update({
             refresh: false,
             status: SatelliteStatus.loading
-        }));
+        });
 
         return this.get(place, "satellite")
                    .then(response => {
                        if (response.data.response.error) {
-                           let status = SatelliteStatus.failed;
-                           
-                           if (response.data.response.error.type == "querynotfound") {
-                               status = SatelliteStatus.notfound;
-                           }
+                           let notFound = response.data.response.error.type == "querynotfound";
+                           let status = notFound ? SatelliteStatus.notfound : SatelliteStatus.failed;
 
-                           store.dispatch(Actions.Satellite.update({ status }));
+                           Actions.Satellite.update({ status });
                        }
                        else {
-                           store.dispatch(Actions.Satellite.update({
+                           Actions.Satellite.update({
                                status: SatelliteStatus.loaded,
                                pics: response.data.satellite
-                           }));
+                           });
                        }
                    })
                    .catch(error => {
-                       store.dispatch(Actions.Satellite.fail());                
+                       Actions.Satellite.fail();
                    });
     }
 
@@ -87,47 +84,41 @@ export default class WeatherProvider extends React.Component {
         return this.get(place, "almanac")
                    .then(response => {
                        if (response.data.response.error) {
-                           let status = AlmanacStatus.failed;
+                           let notFound = response.data.response.error.type == "querynotfound";
+                           let status = notFound ? AlmanacStatus.notfound : AlmanacStatus.failed;
                            
-                           if (response.data.response.error.type == "querynotfound") {
-                               status = AlmanacStatus.notfound;
-                           }
-                           
-                           store.dispatch(Actions.Almanac.update({ status }));
+                           Actions.Almanac.update({ status });
                        }
                        else {
-                           store.dispatch(Actions.Almanac.update({
+                           Actions.Almanac.update({
                                status: AlmanacStatus.loaded,
                                almanac: response.data.almanac
-                           }));
+                           });
                        }
                    });
     }
 
     getForecast (place) {
-        store.dispatch(Actions.Forecast.update({
+        Actions.Forecast.update({
             refresh: false,
             status: ForecastStatus.loading
-        }));
+        });
 
         return this.getAlmanac(place)
                    .then(() =>
                        this.get(place, "forecast")
                            .then(response => {
                                if (response.data.response.error) {
-                                   let status = ForecastStatus.failed;
-                                   
-                                   if (response.data.response.error.type == "querynotfound") {
-                                       status = ForecastStatus.notfound;
-                                   }
-                                   
-                                   store.dispatch(Actions.Forecast.update({ status }));
+                                   let notFound = response.data.response.error.type == "querynotfound";
+                                   let status = notFound ? ForecastStatus.notfound : ForecastStatus.failed;
+
+                                   Actions.Forecast.update({ status });
                                }
                                else {
-                                   store.dispatch(Actions.Forecast.update({
+                                   Actions.Forecast.update({
                                        status: ForecastStatus.loaded,
                                        days: response.data.forecast.simpleforecast.forecastday
-                                   }));
+                                   });
                                }
                            }));
     }
@@ -144,7 +135,7 @@ export default class WeatherProvider extends React.Component {
 		if (error.message == "Network Error") {
 		    this.get(place, feature, promise, ++tries);
 		} else {
-                    /* store.dispatch(Actions.Errors.add(error.message));*/
+                    /* Actions.Errors.add(error.message);*/
                     console.log(error.message);
                 }
             })

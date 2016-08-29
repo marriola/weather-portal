@@ -11,21 +11,22 @@ export default class Dashboard extends React.Component {
     }
 
     toggle(state) {
-        this.props.dispatch(Actions.UI.toggleDashboard(state));
+        Actions.UI.toggleDashboard(state);
     }
     
     render() {
         let open = this.props.ui.dashboardOpen;
+        let expanderClass = open ? "expander open" : "expander closed";
         let containerClass = open ? "container" : "container closed";
         
         return (
             <div className="dashboard">
-                <div className={ containerClass }>
+                <div className={containerClass}>
                     <PlacesContainer weather={ this.props.weather } />
                     <ErrorList />
                 </div>
                 
-                <div className={ open ? "expander open" : "expander closed" }
+                <div className={expanderClass}
                      onClick={ this.toggle.bind(this, !open) }
                 ></div>
             </div>

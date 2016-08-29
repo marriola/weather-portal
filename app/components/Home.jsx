@@ -7,15 +7,13 @@ const WEATHER_API_KEY = "7798a11635de8815";
 
 const MAX_TRIES = 5;
 
-export default class Home extends React.Component {
-    render () {
-	return (
-	    <div id="content">
-                <WeatherProvider apiKey={ WEATHER_API_KEY } maxTries={ MAX_TRIES }>
-                    <Dashboard weather={true} />
-                    <ContentPanel weather={true} />
-                </WeatherProvider>
-	    </div>
-	);
-    }
-}
+let Home = props => (
+    <div id="content">
+        <WeatherProvider apiKey={ WEATHER_API_KEY } maxTries={ MAX_TRIES }>
+            <Dashboard weather={true} />
+            <ContentPanel weather={true} />
+        </WeatherProvider>
+    </div>
+);
+
+export default Home;

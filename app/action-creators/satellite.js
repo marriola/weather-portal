@@ -1,6 +1,7 @@
 import satellite from "reducers/satellite";
+import { createActionCreator } from "action-creators";
 
-export default {
+export default createActionCreator({
     update: function (props) {
         return {
             type: satellite.action("update"),
@@ -13,4 +14,4 @@ export default {
             type: satellite.action("fail")
         }
     }
-};
+});
