@@ -1,7 +1,7 @@
 import forecast from "reducers/forecast";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     update: function (props) {
         return {
             type: forecast.action("update"),

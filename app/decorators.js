@@ -16,5 +16,5 @@ export function connect (...storeNames) {
 
     return function (target) {
         return reduxConnect(mapper)(target);
-    }
+    };
 }

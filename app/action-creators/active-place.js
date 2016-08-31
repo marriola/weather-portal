@@ -1,7 +1,7 @@
 import activePlace from "reducers/active-place";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     set: function (place) {
         return {
             type: activePlace.action("set"),

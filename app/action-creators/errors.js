@@ -1,8 +1,8 @@
 import store from "initialize";
 import errors from "reducers/errors";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     add: function (message) {
 	return {
 	    type: errors.action("add"),

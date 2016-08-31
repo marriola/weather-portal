@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from 'react';
 import { connect } from 'decorators';
 import Actions from "action-creators";
@@ -5,13 +6,14 @@ import PlacesContainer from 'components/Places';
 import ErrorList from 'components/ErrorList';
 
 @connect("ui")
+@autobind
 export default class Dashboard extends React.Component {
     constructor (props) {
         super(props);
     }
 
-    toggle(state) {
-        Actions.UI.toggleDashboard(state);
+    toggle() {
+        Actions.UI.toggleDashboard(!this.props.ui.dashboardOpen);
     }
     
     render() {
@@ -27,7 +29,7 @@ export default class Dashboard extends React.Component {
                 </div>
                 
                 <div className={expanderClass}
-                     onClick={ this.toggle.bind(this, !open) }
+                     onClick={ this.toggle }
                 ></div>
             </div>
         );

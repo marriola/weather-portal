@@ -78,7 +78,7 @@ button:active {
 }
 
 .dashboard .container {
-    height: 175px;
+    height: 190px;
     /*max-height: 500px;*/
     transition-property: /*max-height;*/ all;
     transition-duration: 0.5s;
@@ -142,12 +142,13 @@ button:active {
 
 .box > .body {
     max-height: 1000px;
-    transition: 0.2s ease-in-out max-height;
+    transition: 0.2s ease-in-out all;
     overflow-x: auto;
 }
 
 .box.shade > .body {
     max-height: 0px;
+    max-width: 0px;
     overflow: auto;
 }
 
@@ -247,7 +248,7 @@ button:active {
 
 .contentPanel {
     position: relative;
-    margin-top: 205px;
+    margin-top: 220px;
     transition-property: margin-top;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;

@@ -1,9 +1,9 @@
 import store from "initialize";
 import Errors from "action-creators/errors";
 import places from "reducers/places";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     add: function (place) {
 	Errors.clear();
 

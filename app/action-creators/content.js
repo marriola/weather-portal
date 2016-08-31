@@ -1,7 +1,7 @@
 import content from "reducers/content";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     update: function (props) {
         return {
             type: content.action("update"),

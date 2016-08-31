@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from "react";
 
 let Button = ({ show, state, click, onClass, offClass }) => {
@@ -36,6 +37,7 @@ let Header = ({ title, showShade, shadeState, toggleShade, close }) => {
     );
 };
 
+@autobind
 export default class Panel extends React.Component {
     constructor(props) {
         super(props);
@@ -67,7 +69,7 @@ export default class Panel extends React.Component {
                 <Header title={ this.props.title }
                         showShade={ this.props.shade }
                         shadeState={ this.state.shade }
-                        toggleShade={ this.toggleShade.bind(this) }
+                        toggleShade={ this.toggleShade }
                         close={ this.props.close }/>
                 
                 <div className="body">

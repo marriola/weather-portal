@@ -1,7 +1,7 @@
 import ui from "reducers/ui";
-import { createActionCreator } from "action-creators";
+import { ActionCreator } from "action-creators";
 
-export default createActionCreator({
+export default new ActionCreator({
     toggleDashboard: function (state) {
         return {
             type: ui.action("dashboard"),

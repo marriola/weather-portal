@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from "react";
 import { connect } from "decorators";
 import Panel from "components/Panel";
@@ -65,6 +66,7 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
 };
 
 @connect("forecast", "almanac")
+@autobind
 export default class Forecast extends React.Component {
     constructor(props) {
         super(props);

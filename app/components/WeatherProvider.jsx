@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from "react";
 import Axios from "axios";
 import store from "initialize";
@@ -18,11 +19,10 @@ const WEATHER_API_BASE = "http://api.wunderground.com/api";
 /*
  * Provides weather services to child components
  */
+@autobind
 export default class WeatherProvider extends React.Component {
     constructor(props) {
         super(props);
-        
-        this.render = this.render.bind(this);
     }
 
     getConditions(place) {
@@ -160,10 +160,10 @@ export default class WeatherProvider extends React.Component {
         let children = React.Children.map(this.props.children, x => !x.props.weather ? x :
             React.cloneElement(x, {
                 weather: {
-                    getAlmanac: this.getAlmanac.bind(this),
-                    getConditions: this.getConditions.bind(this),
-                    getForecast: this.getForecast.bind(this),
-                    getSatellite: this.getSatellite.bind(this)
+                    getAlmanac: this.getAlmanac,
+                    getConditions: this.getConditions,
+                    getForecast: this.getForecast,
+                    getSatellite: this.getSatellite
                 }
             }));
         

@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from "react";
 import Panel from "components/Panel";
 import store from "initialize";
@@ -61,9 +62,10 @@ let SearchResults = ({ pb, results, chooseCity }) => (
 
 ////////////////////////////////////////////////////////////////////////////////
 
+@autobind
 export default class PlaceBox extends React.Component {
     constructor(props) {
-	super(props);        
+	super(props);
     }
 
     remove() {
@@ -121,15 +123,15 @@ export default class PlaceBox extends React.Component {
                 
             case PlaceStatus.choosing:
                 content = <SearchResults results={ this.props.place.results }
-                                         chooseCity={ this.chooseCity.bind(this) }
+                                         chooseCity={ this.chooseCity }
                           />;
                 break;   
                 
             case PlaceStatus.loaded:
                 content = <Conditions conditions={ this.props.place.conditions.current_observation }
                                       countryName={ wuCountryCodeToName(this.props.place.country) }
-                                      refresh={ this.refresh.bind(this) }
-                                      peek={ this.peek.bind(this) }
+                                      refresh={ this.refresh }
+                                      peek={ this.peek }
                         />;
                 break;
                 
@@ -139,7 +141,7 @@ export default class PlaceBox extends React.Component {
                     <div>
                         <div className="error">Failed</div>
                         
-                        <button onClick={ this.refresh.bind(this) }>
+                        <button onClick={ this.refresh }>
                             Refresh
                         </button>
                     </div>
@@ -150,7 +152,8 @@ export default class PlaceBox extends React.Component {
 	let weatherBox = (
             <Panel className="conditions"
                    title={ this.props.place.displayName }
-                   close={ this.remove.bind(this) }>
+                   close={ this.remove }
+                   noFloat={true}>
                 { content }
 	    </Panel>
 	);

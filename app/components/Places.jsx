@@ -1,3 +1,4 @@
+import autobind from "autobind-decorator";
 import React from "react";
 import { connect } from "decorators";
 import { Place, PlaceStatus } from "place";
@@ -7,6 +8,7 @@ import PlaceBox from "components/PlaceBox";
 
 ////////////////////////////////////////////////////////////////////////////////
 
+@autobind
 class AddPlace extends React.Component {
     constructor(props) {
 	super(props);
@@ -39,11 +41,11 @@ class AddPlace extends React.Component {
 	    <div>
 		<input type="text" autoFocus={true}
 		       value={ this.state.newPlace }
-		       onChange={ this.placeChange.bind(this) }
-		       onKeyUp={ this.keyUp.bind(this) }
+		       onChange={ this.placeChange }
+		       onKeyUp={ this.keyUp }
 		/>
 
-		<button className="addButton" onClick={ this.addNew.bind(this) }>
+		<button className="addButton" onClick={ this.addNew }>
 		    Add
 		</button>
 	    </div>
@@ -55,7 +57,8 @@ class AddPlace extends React.Component {
 ////////////////////////////////////////////////////////////////////////////////
 
 let PlaceList = ({ places, ...props }) => (
-    <div>
+    <div className="placeBox">
+        <nobr>
         { places.map(place =>
               <PlaceBox key={ place.key }
 		        place={ place }
@@ -63,6 +66,7 @@ let PlaceList = ({ places, ...props }) => (
                         weather={ props.weather }
               />
           ) }
+        </nobr>
     </div>
 );
 
@@ -70,6 +74,7 @@ let PlaceList = ({ places, ...props }) => (
 ////////////////////////////////////////////////////////////////////////////////
 
 @connect("places")
+@autobind
 class PlacesContainer extends React.Component {
     constructor(props) {
 	super(props);
@@ -87,13 +92,11 @@ class PlacesContainer extends React.Component {
 	return (
             <div>
 	        <AddPlace places={ this.props.places }
-                          add={ this.addPlace.bind(this) } />
+                          add={ this.addPlace } />
 
-                <div className="placeBox">
-	            <PlaceList places={ this.props.places }
-                               remove={ this.removePlace.bind(this) }
-                               weather={ this.props.weather } />
-	        </div>
+	        <PlaceList places={ this.props.places }
+                           remove={ this.removePlace }
+                           weather={ this.props.weather } />
             </div>
         );
     }
