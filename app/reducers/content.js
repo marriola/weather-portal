@@ -18,14 +18,16 @@ export default createReducer({
         }
     },
 
-    globalActions: {
-        activePlace$set: function (state, action) {
-            return {
-                ...state,
-                place: action.place,
-                weather: action.place.weather,
-                refresh: true
-            };
+    subscribeTo: {
+        activePlace: {
+            set: function (state, action) {
+                return {
+                    ...state,
+                    place: action.place,
+                    weather: action.place.weather,
+                    refresh: true
+                };
+            }
         }
     }
 });

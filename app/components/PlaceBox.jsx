@@ -46,7 +46,7 @@ let Conditions = ({ countryName, conditions, ...props }) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 let SearchResults = ({ pb, results, chooseCity }) => (
-    <ul>
+    <ul className="padding-left-20">
         {
             results.map(place => (
                 <li key={ place.zmw }>

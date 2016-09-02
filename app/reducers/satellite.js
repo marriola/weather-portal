@@ -1,11 +1,12 @@
 import createReducer from "reducers/reducer";
+import { SatelliteStatus } from "components/Satellite";
 
 
 export default createReducer({
     name: "satellite",
 
     defaultValue: {
-        status: 1
+        status: SatelliteStatus.loading
     },
 
     actions: {
@@ -19,19 +20,21 @@ export default createReducer({
         fail: function (state, action) {
             return {
                 ...state,
-                status: 2
+                status: SatelliteStatus.failed
             };
         }
     },
 
-    globalActions: {
-        activePlace$set: function (state, action) {
-            return {
-                ...state,
-                place: action.place,
-                weather: action.place.weather,
-                refresh: true
-            };
+    subscribeTo: {
+        activePlace: {
+            set: function (state, action) {
+                return {
+                    ...state,
+                    place: action.place,
+                    weather: action.place.weather,
+                    refresh: true
+                };
+            }
         }
     }
 });

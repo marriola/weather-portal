@@ -33,9 +33,9 @@ export default class Dashboard extends React.Component {
                     <ErrorList />
                 </div>
                 
-                <div className={expanderClass}
+                <a className={expanderClass}
                      onClick={ this.toggle }
-                ></div>
+                ></a>
             </div>
         );
     }

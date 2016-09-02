@@ -52,11 +52,12 @@ button {
     color: #000;
     background-color: #888;
     border-radius: 5px;
-    border: none;
+    border: 1px solid #000;
 }
 
 button:active {
     color: #888;
+    border: 1px solid #888;
     background-color: #000;
 }
 
@@ -106,8 +107,14 @@ button:active {
 }
 
 .dashboard .expander {
+    display: block;
     cursor: pointer;
     height: 16px;
+}
+
+.expander:active {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
 
 .expander.open {
@@ -331,4 +338,8 @@ tr:nth-child(odd) {
 .half-width {
     display: inline-block;
     width: 50%;
+}
+
+.padding-left-20 {
+    padding-left: 20px;
 }
