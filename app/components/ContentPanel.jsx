@@ -50,10 +50,8 @@ export default class ContentPanel extends React.Component {
             content = <span>Nothing yet</span>;
         }
 
-        let className = this.props.content.dashboardOpen ? "contentPanel" : "contentPanel up";
-        
         return (
-            <div className={ className }>
+            <div className="contentPanel">
                 { content }
             </div>
         );

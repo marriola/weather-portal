@@ -26,13 +26,6 @@ export default createReducer({
                 weather: action.place.weather,
                 refresh: true
             };
-        },
-        
-        ui$dashboard: function (state, action) {
-            return {
-                ...state,
-                dashboardOpen: action.state
-            };
         }
     }
 });

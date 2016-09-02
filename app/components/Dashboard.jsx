@@ -5,7 +5,7 @@ import Actions from "action-creators";
 import PlacesContainer from 'components/Places';
 import ErrorList from 'components/ErrorList';
 
-@connect("ui")
+@connect("ui", "places")
 @autobind
 export default class Dashboard extends React.Component {
     constructor (props) {
@@ -19,11 +19,16 @@ export default class Dashboard extends React.Component {
     render() {
         let open = this.props.ui.dashboardOpen;
         let expanderClass = open ? "expander open" : "expander closed";
-        let containerClass = open ? "container" : "container closed";
+
+        let empty = this.props.places.length == 0;
+        let classes = [
+            open ? null : "closed",
+            empty ? "empty" : null
+        ].filter(x => !!x).join(" ");
         
         return (
-            <div className="dashboard">
-                <div className={containerClass}>
+            <div className={"dashboard " + classes}>
+                <div className={"container " + classes}>
                     <PlacesContainer weather={ this.props.weather } />
                     <ErrorList />
                 </div>

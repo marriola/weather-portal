@@ -92,6 +92,10 @@ button:active {
     white-space: nowrap;
 }
 
+.dashboard .container.empty {
+    height: 25px;
+}
+
 .dashboard .container.closed .placeBox {
     overflow: visible;
 }
@@ -254,7 +258,11 @@ button:active {
     transition-timing-function: ease-in-out;
 }
 
-.contentPanel.up {
+.dashboard.empty + .contentPanel {
+    margin-top: 55px;
+}
+
+.dashboard.closed + .contentPanel {
     margin-top: 27px;
 }
 
