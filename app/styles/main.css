@@ -331,6 +331,10 @@ tr:nth-child(odd) {
     font-size: 85%;
 }
 
+.forecast-segment.black {
+    color: #111;
+}
+
 .forecast-segment:not(:first-child) {
     margin-left: 3px;
 }

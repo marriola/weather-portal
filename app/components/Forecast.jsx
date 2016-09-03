@@ -27,6 +27,7 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
     let color = { red: 128, green: 128, blue: 128 };
     let diff;
     let style;
+    let className = "forecast-segment";
 
     if (!isNaN(averages.high)) {
         let d = ((high - averages.high) + (low - averages.low)) / 2;
@@ -51,10 +52,11 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
                        zeroPad(color.blue.toString(16))
 
         style = { backgroundColor: "#" + hexColor };
+        className += " black";
     }
     
     return (
-        <div className="forecast-segment" style={style}>
+        <div className={className} style={style}>
             <b>{date}</b><br/>
             {diff}<br/>
             <b>{today.conditions}</b><br/>

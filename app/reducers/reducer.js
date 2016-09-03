@@ -11,7 +11,8 @@ export default function createReducer({
     preAction,
     postAction,
     methods = {},
-    actions = crRequired("actions"),
+    actions = {},
+    subscribeTo = {},
     globalActions = {}
 }) {
     let actionTable = Object.assign({}, globalActions);
@@ -39,13 +40,19 @@ export default function createReducer({
         return name + "$" + action;
     }
 
-    Object.getOwnPropertyNames(actions).forEach(key => {
+    for (let key in actions) {
         actionTable[reducer.action(key)] = actions[key];
-    });
+    }
 
-    Object.getOwnPropertyNames(methods).forEach(key => {
+    for (let store in subscribeTo) {
+        for (let key in subscribeTo[store]) {
+            actionTable[store + "$" + key] = subscribeTo[store][key];
+        }
+    }
+
+    for (let key in methods) {
         reducer[key] = methods[key];
-    });
-    
+    }
+
     return reducer;
 }
