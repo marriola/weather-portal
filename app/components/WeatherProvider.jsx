@@ -21,6 +21,13 @@ const WEATHER_API_BASE = "http://api.wunderground.com/api";
  */
 @autobind
 export default class WeatherProvider extends React.Component {
+    serviceMethods = {
+        getAlmanac,
+        getConditions,
+        getForecast,
+        getSatellite
+    };
+
     constructor(props) {
         super(props);
     }
@@ -124,16 +131,18 @@ export default class WeatherProvider extends React.Component {
     }
 
     get (place, feature, promise = null, tries = 0) {
+        let path = this.queryPath(place, feature);
+        
         if (tries == this.props.maxTries) {
-            throw "Max tries exceeded";
+            throw `Max tries exceeded (${path})`;
         }
 
-        promise = promise || Axios.get(this.queryPath(place, feature));
+        promise = promise || Axios.get(path);
 
         return promise
             .catch(error => {
 		if (error.message == "Network Error") {
-		    this.get(place, feature, promise, ++tries);
+		    this.get(place, feature, promise, tries + 1);
 		} else {
                     /* Actions.Errors.add(error.message);*/
                     console.log(error.message);
@@ -149,7 +158,8 @@ export default class WeatherProvider extends React.Component {
         }
         else if (place.city) {
 	    path += `${place.state}/${place.city}`;
-        } else {
+        }
+        else {
 	    path += place.zip;
         }
 
@@ -157,20 +167,16 @@ export default class WeatherProvider extends React.Component {
     }
     
     render() {
-        let children = React.Children.map(this.props.children, x => !x.props.weather ? x :
-            React.cloneElement(x, {
-                weather: {
-                    getAlmanac: this.getAlmanac,
-                    getConditions: this.getConditions,
-                    getForecast: this.getForecast,
-                    getSatellite: this.getSatellite
-                }
-            }));
-        
-        if (children.length == 0) {
+        if (!this.props.children)
             return null;
-        }
-        else if (children.length == 1) {
+        
+        let children = React.Children.map(
+            this.props.children,
+            x => x.props.weather ?
+                React.cloneElement(x, { weather: serviceMethods }) :
+                x);
+        
+        if (children.length == 1) {
             return children;
         }
         else {
