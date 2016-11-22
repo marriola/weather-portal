@@ -8,6 +8,7 @@ import { PlaceStatus } from "place";
 import { SatelliteStatus } from "components/Satellite";
 import { AlmanacStatus } from "almanac";
 import { ForecastStatus } from "components/Forecast";
+import QueryBuilder from "query-builder";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -22,10 +23,10 @@ const WEATHER_API_BASE = "http://api.wunderground.com/api";
 @autobind
 export default class WeatherProvider extends React.Component {
     serviceMethods = {
-        getAlmanac,
-        getConditions,
-        getForecast,
-        getSatellite
+        getAlmanac: this.getAlmanac,
+        getConditions: this.getConditions,
+        getForecast: this.getForecast,
+        getSatellite: this.getSatellite
     };
 
     constructor(props) {
@@ -151,29 +152,34 @@ export default class WeatherProvider extends React.Component {
     }
     
     queryPath(place, feature) {
-        let path = `${WEATHER_API_BASE}/${this.props.apiKey}/${feature}/q/`;
+        let builder = new QueryBuilder(WEATHER_API_BASE, ".json");
+
+        builder.path.push(this.props.apiKey, feature, "q");
 
         if (place.zmw) {
-            path += `zmw:${place.zmw}`;
+            builder.path.push(`zmw:${place.zmw}`);
         }
         else if (place.city) {
-	    path += `${place.state}/${place.city}`;
+	    builder.path.push(place.state, place.city);
         }
         else {
-	    path += place.zip;
+	    builder.path.push(place.zip);
         }
 
-        return path + ".json";
+        return builder.toString();
     }
     
     render() {
         if (!this.props.children)
             return null;
-        
+
         let children = React.Children.map(
             this.props.children,
             x => x.props.weather ?
-                React.cloneElement(x, { weather: serviceMethods }) :
+               React.cloneElement(x, {
+                   weather: this.serviceMethods,
+                   geonames: this.props.geonames
+               }) :
                 x);
         
         if (children.length == 1) {

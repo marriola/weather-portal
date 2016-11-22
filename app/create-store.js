@@ -7,6 +7,7 @@ import almanac from 'reducers/almanac';
 import content from 'reducers/content';
 import errors from 'reducers/errors';
 import forecast from 'reducers/forecast';
+import nearby from 'reducers/nearby';
 import places from 'reducers/places';
 import satellite from 'reducers/satellite';
 import ui from 'reducers/ui';
@@ -17,6 +18,7 @@ let reducers = {
     content,
     errors,
     forecast,
+    nearby,
     places,
     satellite,
     ui

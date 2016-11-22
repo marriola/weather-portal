@@ -35,6 +35,17 @@ export default createReducer({
 	    ];
         },
 
+
+        addPreselect: function addPlace (state, action) {
+            let place = new Place(action.payload);
+            place.displayName = this.displayName(place);
+            
+	    return [
+	        place,
+	        ...state
+	    ];
+        },
+
         
         remove: function removePlace (state, action) {
 	    return state.slice().filter(x => x.key !== action.key);

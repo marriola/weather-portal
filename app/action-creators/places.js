@@ -13,6 +13,15 @@ export default new ActionCreator({
 	};
     },
 
+    addPreselect: function (place) {
+        Errors.clear();
+
+        return {
+            type: places.action("addPreselect"),
+            payload: place
+        };
+    },
+
     remove: function (key) {
 	return {
 	    type: places.action("remove"),

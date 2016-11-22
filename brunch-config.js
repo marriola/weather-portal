@@ -12,7 +12,7 @@ module.exports = {
   plugins: {
       babel: {
           presets: ['es2015', 'es2017', 'react'],
-          plugins: ['transform-decorators-legacy']
+          plugins: ['transform-decorators-legacy', 'transform-class-properties']
       }
   }
 };

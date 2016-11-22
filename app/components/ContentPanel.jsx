@@ -5,6 +5,7 @@ import { wuCountryCodeToName } from 'country-codes';
 import Satellite from 'components/Satellite';
 import Conditions from 'components/Conditions';
 import Forecast from 'components/Forecast';
+import Nearby from 'components/Nearby';
 import Actions from 'action-creators';
 
 @connect("content")
@@ -42,6 +43,8 @@ export default class ContentPanel extends React.Component {
                         <Satellite weather={ this.props.weather } />
                         <Forecast place={ this.props.content.place }
                                   weather={ this.props.weather } />
+                        <Nearby place={ this.props.content.place }
+                                geonames={ this.props.geonames } />
                     </div>
                 </div>
             );

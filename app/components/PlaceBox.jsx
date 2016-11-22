@@ -84,6 +84,10 @@ export default class PlaceBox extends React.Component {
 	if (this.props.place.status == PlaceStatus.loading) {
 	    this.props.weather.getConditions(this.props.place).then((response => {
                 if (response) {
+                    if (store.getState().activePlace.presetPlace == `${this.props.place.city}, ${this.props.place.state}`) {
+                        this.peek();
+                    }
+                    
 		    Actions.Places.load(this.props.place.key, response);
                 }
                 else { //if (this.props.place.status == PlaceStatus.loading)
