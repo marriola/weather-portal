@@ -1,6 +1,14 @@
 import autobind from "autobind-decorator";
 import React from "react";
 
+const PanelStatus = {
+    loading: 0,
+    loaded: 1,
+    error: 2
+};
+
+export { PanelStatus };
+
 let Button = ({ show, state, click, onClass, offClass }) => {
     if (show) {
         let classes = "fa " + (state ? onClass : offClass);        

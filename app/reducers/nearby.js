@@ -1,9 +1,21 @@
 import createReducer from 'reducers/reducer.js';
+import { PanelStatus } from 'components/Panel';
 
 export default createReducer({
     name: "nearby",
 
-    defaultValue: {},
+    defaultValue: {
+//        status: PanelStatus.loading
+    },
+
+    actions: {
+        update: function (state, action) {
+            return {
+                ...state,
+                status: action.status
+            };
+        }
+    },
 
     subscribeTo: {
         activePlace: {

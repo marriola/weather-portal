@@ -66,11 +66,11 @@ export default class GeonamesProvider extends React.Component {
             adminCode1: state,
             adminCode2: country,
             featureCode: [
-                /*                 FeatureCode.City.Capital,*/
+                FeatureCode.City.Capital,
                 FeatureCode.City.AdministrativeSeat,
-                /* FeatureCode.City.AdministrativeSeat2,
-                 * FeatureCode.City.AdministrativeSeat3,
-                 * FeatureCode.City.AdministrativeSeat4,*/
+                FeatureCode.City.AdministrativeSeat2,
+                FeatureCode.City.AdministrativeSeat3,
+                FeatureCode.City.AdministrativeSeat4,
                 FeatureCode.City.Place
             ],
             maxRows: 1
@@ -83,8 +83,6 @@ export default class GeonamesProvider extends React.Component {
                 return;
             
             let { name, lat, lng } = response.data.geonames[0];
-
-            console.log(`${name}: ${lat}, ${lng}`);
 
             return api.search({
                 north: +lat + SEARCH_RADIUS,
