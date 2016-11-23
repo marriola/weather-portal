@@ -37,13 +37,19 @@ export default createReducer({
 
 
         addPreselect: function addPlace (state, action) {
+            let displayNames = state.map(x => x.displayName);
             let place = new Place(action.payload);
             place.displayName = this.displayName(place);
-            
-	    return [
-	        place,
-	        ...state
-	    ];
+
+            if (!displayNames.includes(place.displayName)) {
+	        return [
+	            place,
+	            ...state
+	        ];
+            }
+            else {
+                return state;
+            }
         },
 
         
