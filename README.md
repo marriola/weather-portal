@@ -1,3 +1,3 @@
 A Weather Underground API client
 
-[Demo](http://maa-weather-portal.netlify.com)
+[Demo](http://maa-wp.netlify.com)
