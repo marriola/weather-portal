@@ -8,7 +8,7 @@ import Forecast from 'components/Forecast';
 import Nearby from 'components/Nearby';
 import Actions from 'action-creators';
 
-@connect("content")
+@connect("content", "ui")
 @autobind
 export default class ContentPanel extends React.Component {
     refresh() {
@@ -39,10 +39,11 @@ export default class ContentPanel extends React.Component {
                     </div>
 
                     <div style={{ overflow: "auto" }}>
-                        <Conditions place={ this.props.content.place } />
+                        <Conditions place={ this.props.content.place } scale={ this.props.ui.scale } />
                         <Satellite weather={ this.props.weather } />
                         <Forecast place={ this.props.content.place }
-                                  weather={ this.props.weather } />
+                                  weather={ this.props.weather }
+                                  scale={ this.props.ui.scale }/>
                         <Nearby place={ this.props.content.place }
                                 geonames={ this.props.geonames } />
                     </div>

@@ -5,11 +5,12 @@ import store from "initialize";
 import { Place, PlaceStatus } from "place";
 import Actions from "action-creators";
 import { wuCountryCodeToName } from "country-codes";
+import { chooseScale } from "utils";
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-let Conditions = ({ countryName, conditions, ...props }) => {
+let Conditions = ({ countryName, conditions, scale, ...props }) => {
     let zip = conditions.display_location.zip;
     if (zip === "00000")
         zip = null;
@@ -24,10 +25,10 @@ let Conditions = ({ countryName, conditions, ...props }) => {
                     { conditions.weather }
                 </li>
 		<li>
-                    { conditions.temp_f } &deg;F
+                    { chooseScale(scale, conditions, "temp") }
                 </li>
                 <li>
-                    Feels like { conditions.feelslike_f } &deg;F
+                    Feels like { chooseScale(scale, conditions, "feelslike") }
                 </li>
 	    </ul>
 
@@ -134,6 +135,7 @@ export default class PlaceBox extends React.Component {
             case PlaceStatus.loaded:
                 content = <Conditions conditions={ this.props.place.conditions.current_observation }
                                       countryName={ wuCountryCodeToName(this.props.place.country) }
+                                      scale={ this.props.scale }
                                       refresh={ this.refresh }
                                       peek={ this.peek }
                         />;

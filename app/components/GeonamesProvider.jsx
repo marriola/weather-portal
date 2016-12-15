@@ -29,6 +29,15 @@ const FeatureCode = {
     }
 };
 
+const PLACES = [
+    FeatureCode.City.Capital,
+    FeatureCode.City.AdministrativeSeat,
+    FeatureCode.City.AdministrativeSeat2,
+    FeatureCode.City.AdministrativeSeat3,
+    FeatureCode.City.AdministrativeSeat4,
+    FeatureCode.City.Place
+];
+
 export {
     FeatureCode
 };
@@ -45,12 +54,21 @@ export default class GeonamesProvider extends React.Component {
 
             search: {
                 params: ParamType.QUERY_STRING
-            }
+            },
+
+            /* get: {
+             *     params: [
+             *         { name: "geonameId", type: ParamType.QUERY_STRING },
+             *         { name: "lang", type: ParamType.QUERY_STRING },
+             *         { name: "style", type: ParamType.QUERY_STRING }
+             *     ]
+             * }*/
         };
 
         this.service = new WebService({
             baseUrl: API_BASE,
             suffix: "JSON",
+            defaultParameterType: ParamType.QUERY_STRING,
             services,
             preRequest: builder => builder.queryString.username = API_USERNAME
         });
@@ -61,24 +79,15 @@ export default class GeonamesProvider extends React.Component {
    }
 
     findNearby(city, state, country, numResults = 15) {
-        let options = {
+        let api = this.api;
+
+        return api.search({
             name_equals: city,
             adminCode1: state,
             adminCode2: country,
-            featureCode: [
-                FeatureCode.City.Capital,
-                FeatureCode.City.AdministrativeSeat,
-                FeatureCode.City.AdministrativeSeat2,
-                FeatureCode.City.AdministrativeSeat3,
-                FeatureCode.City.AdministrativeSeat4,
-                FeatureCode.City.Place
-            ],
+            featureCode: PLACES,
             maxRows: 1
-        };
-
-        let api = this.api;
-
-        return api.search(options).then(function (response) {
+        }).then(response => {
             if (response.data.geonames.length == 0)
                 return;
             
@@ -89,7 +98,7 @@ export default class GeonamesProvider extends React.Component {
                 south: +lat - SEARCH_RADIUS,
                 east: +lng + SEARCH_RADIUS,
                 west: +lng - SEARCH_RADIUS,
-                featureCode: "PPL",
+                featureCode: PLACES,
                 maxRows: numResults
             });
         });

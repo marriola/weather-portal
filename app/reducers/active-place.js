@@ -7,6 +7,13 @@ export default createReducer({
     defaultValue: {},
 
     actions: {
+        /* preset: function (state, action) {
+         *     return {
+         *         ...state,
+         *         presetPlace: action.payload
+         *     };
+         * },*/
+        
         set: function (state, action) {
             return {
                 ...state,

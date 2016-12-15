@@ -2,6 +2,7 @@ import autobind from "autobind-decorator";
 import React from "react";
 import { connect } from "decorators";
 import { Place, PlaceStatus } from "place";
+import { TemperatureScale } from "components/Conditions";
 import Actions from "action-creators";
 import PlaceBox from "components/PlaceBox";
 
@@ -64,11 +65,46 @@ let PlaceList = ({ places, ...props }) => (
 		        place={ place }
 		        remove={ props.remove }
                         weather={ props.weather }
+                        scale={ props.scale }
               />
           ) }
         </nobr>
     </div>
 );
+
+////////////////////////////////////////////////////////////////////////////////
+
+@connect("ui")
+@autobind
+class ScalePicker extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    setScale(scale) {
+        Actions.UI.setScale(scale);
+    }
+
+    render() {
+        return (
+            <div>
+                <label>
+                    <input type="radio" name="scale" value={TemperatureScale.C}
+                           checked={this.props.ui.scale == TemperatureScale.C}
+                           onChange={this.setScale.bind(this, TemperatureScale.C)} />
+                    Celsius
+                </label>
+                
+                <label>
+                    <input type="radio" name="scale" value={TemperatureScale.F}
+                           checked={this.props.ui.scale == TemperatureScale.F}
+                           onChange={this.setScale.bind(this, TemperatureScale.F)} />
+                    Fahrenheit
+                </label>
+            </div>
+        );
+    }
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +132,10 @@ class PlacesContainer extends React.Component {
 
 	        <PlaceList places={ this.props.places }
                            remove={ this.removePlace }
-                           weather={ this.props.weather } />
+                           weather={ this.props.weather }
+                           scale={ this.props.scale } />
+
+                <ScalePicker />
             </div>
         );
     }

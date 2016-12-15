@@ -29,13 +29,11 @@ export default class Dashboard extends React.Component {
         return (
             <div className={"dashboard " + classes}>
                 <div className={"container " + classes}>
-                    <PlacesContainer weather={ this.props.weather } />
+                    <PlacesContainer weather={ this.props.weather } scale={ this.props.ui.scale } />
                     <ErrorList />
                 </div>
                 
-                <a className={expanderClass}
-                     onClick={ this.toggle }
-                ></a>
+                <a className={expanderClass} onClick={ this.toggle }></a>
             </div>
         );
     }

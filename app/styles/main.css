@@ -79,7 +79,7 @@ button:active {
 }
 
 .dashboard .container {
-    height: 190px;
+    height: 210px;
     /*max-height: 500px;*/
     transition-property: /*max-height;*/ all;
     transition-duration: 0.5s;
@@ -94,7 +94,7 @@ button:active {
 }
 
 .dashboard .container.empty {
-    height: 25px;
+    height: 45px;
 }
 
 .dashboard .container.closed .placeBox {
@@ -259,7 +259,7 @@ button:active {
 
 .contentPanel {
     position: relative;
-    margin-top: 220px;
+    margin-top: 240px;
     transition-property: margin-top;
     transition-duration: 0.5s;
     transition-timing-function: ease-in-out;

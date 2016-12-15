@@ -6,6 +6,13 @@ export default new ActionCreator({
         return {
             type: ui.action("dashboard"),
             state
-        }
+        };
+    },
+
+    setScale: function (scale) {
+        return {
+            type: ui.action("setScale"),
+            scale
+        };
     }
 });

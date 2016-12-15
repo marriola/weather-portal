@@ -2,6 +2,7 @@ import autobind from "autobind-decorator";
 import React from "react";
 import { connect } from "decorators";
 import Panel from "components/Panel";
+import { TemperatureScale } from "components/Conditions";
 
 let ForecastStatus = {
     loading: 0,
@@ -18,12 +19,12 @@ function zeroPad(digit) {
     }
 }
 
-let ForecastDay = ({ today, averages, fahrenheit }) => {
+let ForecastDay = ({ today, averages, scale }) => {
     let date = today.date.month + "/" + today.date.day + "/" + today.date.year;
-    
+
+    let fahrenheit = scale == TemperatureScale.F;
     let high = fahrenheit ? +today.high.fahrenheit : +today.high.celsius;
     let low = fahrenheit ? +today.low.fahrenheit : +today.low.celsius;
-    let deg = fahrenheit ? "F" : "C";
     let color = { red: 128, green: 128, blue: 128 };
     let diff;
     let style;
@@ -31,9 +32,10 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
 
     if (!isNaN(averages.high)) {
         let d = ((high - averages.high) + (low - averages.low)) / 2;
+        let scaleFactor = fahrenheit ? 1 : 9/5;
         let sign = (d > 0 ? "+" : "");
         diff = <span className="small">({sign}{d})</span>;
-        let dcolor = Math.floor(d * 5);
+        let dcolor = Math.floor(d * scaleFactor * 5);
 
         color.red += dcolor;
         color.green -= Math.abs(dcolor);
@@ -60,8 +62,8 @@ let ForecastDay = ({ today, averages, fahrenheit }) => {
             <b>{date}</b><br/>
             {diff}<br/>
             <b>{today.conditions}</b><br/>
-            High: {high} &deg;{deg}<br/>
-            Low: {low} &deg;{deg}<br/>
+            High: {high} &deg;{scale}<br/>
+            Low: {low} &deg;{scale}<br/>
             Avg Humidity: {today.avehumidity}%
         </div>
     );
@@ -100,8 +102,7 @@ export default class Forecast extends React.Component {
                 if (this.props.almanac.almanac) {
                     let almanac = this.props.almanac.almanac;
                     let days = this.props.forecast.days;
-                    let fahrenheit = true;
-                    let deg = fahrenheit ? "F" : "C";
+                    let fahrenheit = this.props.scale == TemperatureScale.F;
 
                     let averages = {
                         high: parseInt(fahrenheit ? almanac.temp_high.normal.F : almanac.temp_high.normal.C),
@@ -112,7 +113,7 @@ export default class Forecast extends React.Component {
                         <ForecastDay key={day.date.epoch}
                                      today={day}
                                      averages={averages}
-                                     fahrenheit={true} />
+                                     scale={this.props.scale} />
                     );
 
                     content = (
@@ -123,8 +124,8 @@ export default class Forecast extends React.Component {
                             
                             { isNaN(averages.high) ? null :
                               <div>
-                                  Avg High: {averages.high} &deg;{deg}<br/>
-                                  Avg Low: {averages.low} &deg;{deg}
+                                  Avg High: {averages.high} &deg;{this.props.scale}<br/>
+                                  Avg Low: {averages.low} &deg;{this.props.scale}
                               </div> }
                         </div>
                     );

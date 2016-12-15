@@ -1,5 +1,6 @@
 import { v4 } from "node-uuid";
 import bigInt from "big-integer";
+import { TemperatureScale } from "components/Conditions";
 
 function splitJoin(str, splitChar, joinChar, fun) {
     return str.split(splitChar)
@@ -115,3 +116,8 @@ export function uniqueIdentifier() {
 
     return answer;
 }
+
+export function chooseScale(scale, conditions, name) {
+    let propName = scale == TemperatureScale.C ? name + "_c" : name + "_f";
+    return `${conditions[propName]} °${scale}`;
+};

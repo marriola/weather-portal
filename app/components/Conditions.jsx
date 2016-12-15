@@ -1,8 +1,15 @@
 import React from 'react';
-import { niceTime, nullify } from 'utils';
+import { chooseScale, niceTime, nullify } from 'utils';
 import Panel from 'components/Panel';
 
-export default function Conditions({ place }) {
+const TemperatureScale = {
+    C: 'C',
+    F: 'F'
+};
+
+export { TemperatureScale };
+
+export default function Conditions({ place, scale = TemperatureScale.F }) {
     let conditions = place.conditions.current_observation;
 
     return (
@@ -21,7 +28,7 @@ export default function Conditions({ place }) {
 
                     <tr>
                         <td>Temperature</td>
-                        <td>{ conditions.temp_f } &deg;F</td>
+                        <td>{ chooseScale(scale, conditions, "temp") }</td>
                     </tr>
                     
                     <tr>
@@ -44,21 +51,21 @@ export default function Conditions({ place }) {
 
                     <tr>
                         <td>Dewpoint</td>
-                        <td>{ conditions.dewpoint_f } &deg;F</td>
+                        <td>{ chooseScale(scale, conditions, "dewpoint") }</td>
                     </tr>
 
                     { nullify(conditions.windchill_f, "NA") ?
                       null :
                       <tr>
                           <td>Windchill</td>
-                          <td>{ conditions.windchill_f } &deg;F</td>
+                          <td>{ chooseScale(scale, conditions, "windchill") }</td>
                       </tr> }
                       
                       { nullify(conditions.heat_index_f, "NA") ?
                         null :
                         <tr>
                             <td>Heat Index</td>
-                            <td>{ conditions.heat_index_f } &deg;F</td>
+                            <td>{ chooseScale(scale, conditions, "heat_index") }</td>
                         </tr> }
                         
                         <tr>

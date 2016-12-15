@@ -11,9 +11,17 @@ export { ParamType };
 
 @autobind
 export default class WebService {
-    constructor({ baseUrl, suffix, services, preRequest, postRequest }) {
+    constructor({
+        baseUrl,
+        suffix,
+        defaultParameterType,
+        services,
+        preRequest,
+        postRequest
+    }) {
         this.baseUrl = baseUrl;
         this.suffix = suffix;
+        this.defaultParameterType = defaultParameterType;
         this.services = services;
         this.serviceNames = Object.getOwnPropertyNames(services);
         this.preRequest = preRequest;
@@ -21,17 +29,15 @@ export default class WebService {
 
         this.api = new Proxy({}, {
             get: function get(target, prop, receiver) {
-                if (this.serviceNames.includes(prop)) {
-                    return function() {
-                        return this.retrieve(prop, arguments);
-                    }.bind(this);
-                }
+                return function() {
+                    return this.retrieve(prop, arguments);
+                }.bind(this);
             }.bind(this)
         });
     }
 
     retrieve(serviceName, args) {
-        let service = this.services[serviceName];
+        let service = this.services[serviceName] || { params: this.defaultParameterType };
         let builder = new QueryBuilder(this.baseUrl, this.suffix);
 
         builder.path.push(serviceName);
@@ -55,6 +61,10 @@ export default class WebService {
             }
         }
         else {
+            if (typeof service.params != "object") {
+                throw `An argument list was provided, but no parameters are defined for '${serviceName}'`;
+            }
+            
             // An argument list is provided
             let paramNames = service.params.map(x => x.name);
 
